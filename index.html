@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>夫妻共同記帳 🐾</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#FF6B9D;--secondary:#4ECDC4;
+  --cat:#FF8C42;--cat-light:#FFF3E0;
+  --husband:#5B8CFF;--wife:#FF6B9D;
+  --income:#2E7D32;--expense:#C62828;
+  --bg:#FDF6FF;--card:#fff;--text:#2D2D2D;--muted:#888;
+  --border:#EDE8F5;--shadow:0 2px 16px rgba(120,80,180,.08);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:76px}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#FF6B9D 0%,#A855F7 50%,#5B8CFF 100%);color:#fff;padding:16px 16px 12px;text-align:center;position:relative;overflow:hidden}
+.header::before{content:'🐾';position:absolute;right:14px;top:14px;font-size:22px;opacity:.35;transform:rotate(15deg)}
+.header::after{content:'🐾';position:absolute;left:14px;top:12px;font-size:16px;opacity:.25;transform:rotate(-20deg)}
+.header h1{font-size:18px;font-weight:800;letter-spacing:.5px}
+.header-cat{font-size:11px;opacity:.85;margin-top:2px;letter-spacing:.3px}
+.sync-badge{font-size:11px;display:inline-block;margin-top:2px}
+.person-sel{display:flex;background:rgba(255,255,255,.22);border-radius:25px;padding:3px;margin:10px auto 0;width:fit-content}
+.psn-btn{padding:6px 20px;border:none;border-radius:22px;cursor:pointer;font-size:13px;font-weight:700;background:transparent;color:#fff;transition:all .2s}
+.psn-btn.active{background:#fff}
+.psn-btn.husband.active{color:var(--husband)}
+.psn-btn.wife.active{color:var(--wife)}
+
+/* ── BOTTOM NAV ── */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid var(--border);display:flex;z-index:100;box-shadow:0 -2px 12px rgba(120,80,180,.1)}
+.nitem{flex:1;display:flex;flex-direction:column;align-items:center;padding:6px 2px;cursor:pointer;color:var(--muted);font-size:9px;border:none;background:none;transition:color .2s}
+.nitem.active{color:var(--primary)}
+.nicon{font-size:18px;margin-bottom:1px}
+.nitem.cat-nav.active .nicon{animation:catBounce .6s ease-in-out}
+@keyframes catBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+/* ── PAGES ── */
+.page{display:none;padding:14px 14px 0}
+.page.active{display:block}
+
+/* ── CARDS ── */
+.card{background:#fff;border-radius:16px;padding:15px;margin-bottom:11px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.card-paw{position:absolute;right:10px;bottom:8px;font-size:28px;opacity:.04;pointer-events:none;transform:rotate(10deg)}
+.card-title{font-size:13px;color:var(--muted);margin-bottom:10px;font-weight:600}
+
+/* ── FAMILY CARD ── */
+.family-card{background:linear-gradient(135deg,#7C3AED,#4776E6);border-radius:18px;padding:18px;color:#fff;margin-bottom:11px;margin-top:14px;box-shadow:0 4px 20px rgba(124,58,237,.28);position:relative;overflow:hidden}
+.family-card::after{content:'🐾';position:absolute;right:16px;top:16px;font-size:32px;opacity:.12}
+.fc-title{font-size:12px;opacity:.85;margin-bottom:12px;font-weight:600;letter-spacing:.5px}
+.fc-row{display:flex;justify-content:space-between;margin-bottom:6px}
+.fc-label{font-size:11px;opacity:.8}
+.fc-amount{font-size:20px;font-weight:800}
+.fc-divider{border:none;border-top:1px solid rgba(255,255,255,.25);margin:10px 0}
+
+/* ── INDIVIDUAL CARDS ── */
+.indiv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:11px}
+.indiv-card{background:#fff;border-radius:14px;padding:13px;box-shadow:var(--shadow)}
+.person-badge{font-size:10px;padding:2px 9px;border-radius:10px;display:inline-block;margin-bottom:7px;font-weight:700}
+.badge-husband{background:#EEF2FF;color:var(--husband)}
+.badge-wife{background:#FFF0F5;color:var(--wife)}
+.ic-label{font-size:10px;color:var(--muted);margin-top:5px}
+.ic-amount{font-size:16px;font-weight:700}
+.clr-income{color:#2E7D32}.clr-expense{color:#C62828}
+.clr-pos{color:#2E7D32}.clr-neg{color:#C62828}
+
+/* ── FORM ── */
+.form-section{margin-top:14px}
+.form-header{font-size:15px;font-weight:800;margin-bottom:15px;display:flex;align-items:center;gap:6px}
+.fg{margin-bottom:13px}
+.flabel{display:block;font-size:12px;font-weight:700;margin-bottom:5px;color:#555}
+.finput{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;background:#FAFBFD;color:var(--text);outline:none;transition:border-color .2s}
+.finput:focus{border-color:var(--primary)}
+.type-toggle{display:flex;gap:9px}
+.tbtn{flex:1;padding:11px;border:2px solid var(--border);border-radius:10px;background:#fff;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
+.tbtn.expense.active{border-color:#C62828;background:#FFEBEE;color:#C62828}
+.tbtn.income.active{border-color:#2E7D32;background:#E8F5E9;color:#2E7D32}
+.cat-grid{display:flex;flex-wrap:wrap;gap:7px}
+.cpill{padding:6px 11px;border:1.5px solid var(--border);border-radius:18px;font-size:12px;cursor:pointer;transition:all .2s;background:#fff;white-space:nowrap}
+.cpill.sel-income{border-color:#2E7D32;background:#E8F5E9;color:#2E7D32}
+.cpill.sel-expense{border-color:#C62828;background:#FFEBEE;color:#C62828}
+.btn-submit{width:100%;padding:13px;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#FF6B9D,#A855F7,#5B8CFF);color:#fff;margin-top:4px;transition:opacity .2s}
+.btn-submit:active{opacity:.8}
+.btn-secondary{width:100%;padding:12px;border:2px solid var(--secondary);border-radius:12px;background:#fff;color:#00897B;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px}
+
+/* ── RECORDS ── */
+.filter-row{display:flex;gap:8px;margin-bottom:11px}
+.fsel{flex:1;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:#fff;outline:none}
+.rec-item{display:flex;align-items:center;padding:11px 0;border-bottom:1px solid var(--border)}
+.rec-item:last-child{border-bottom:none}
+.rec-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-right:11px;flex-shrink:0}
+.rec-info{flex:1;min-width:0}
+.rec-cat{font-size:13px;font-weight:700}
+.rec-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.rec-amt{font-size:15px;font-weight:800;white-space:nowrap}
+.rec-del{margin-left:8px;background:none;border:none;color:#ddd;cursor:pointer;font-size:15px;padding:3px}
+.date-group{font-size:11px;font-weight:700;color:var(--muted);padding:8px 0 3px;letter-spacing:.4px}
+
+/* ── CHARTS ── */
+.chart-filter-card{background:#fff;border-radius:16px;padding:15px;margin-bottom:11px;margin-top:14px;box-shadow:var(--shadow)}
+.range-pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.rpill{padding:5px 13px;border:1.5px solid var(--border);border-radius:18px;background:#fff;font-size:12px;cursor:pointer;transition:all .2s}
+.rpill.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.custom-row{display:none;gap:8px;margin-top:8px;align-items:center}
+.custom-row.show{display:flex}
+.chart-wrap{position:relative;height:210px;margin:8px 0 4px}
+
+/* ── SHOPPING LIST ── */
+.list-hero{text-align:center;padding:18px 0 8px;margin-top:6px}
+.cat-mascot{font-size:52px;display:block;animation:float 3s ease-in-out infinite;line-height:1.2}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.list-hero-title{font-size:17px;font-weight:800;margin-top:8px;color:var(--text)}
+.list-hero-sub{font-size:12px;color:var(--muted);margin-top:3px}
+
+.list-add-row{display:flex;gap:8px}
+.list-add-row .finput{flex:1;min-width:0}
+.list-add-row .fsel{width:auto;flex-shrink:0;padding:11px 8px;font-size:12px}
+
+.btn-cat{width:100%;padding:13px;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,var(--cat),#FF6B9D);color:#fff;margin-top:10px;transition:opacity .2s}
+.btn-cat:active{opacity:.8}
+
+.list-stats{display:flex;gap:8px;margin-bottom:11px}
+.stat-pill{flex:1;background:#fff;border-radius:12px;padding:10px;text-align:center;box-shadow:var(--shadow)}
+.stat-pill .sp-num{font-size:20px;font-weight:800;color:var(--cat)}
+.stat-pill .sp-label{font-size:10px;color:var(--muted);margin-top:2px}
+
+.btn-clear{padding:8px 14px;border:1.5px solid #FFCDD2;border-radius:8px;background:#fff;color:#C62828;font-size:12px;font-weight:600;cursor:pointer}
+
+.shop-item{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);transition:opacity .25s}
+.shop-item:last-child{border-bottom:none}
+.shop-item.done{opacity:.45}
+.shop-item.done .si-text{text-decoration:line-through;color:var(--muted)}
+.si-check{font-size:22px;cursor:pointer;margin-right:11px;user-select:none;flex-shrink:0;transition:transform .15s}
+.si-check:active{transform:scale(.85)}
+.si-info{flex:1;min-width:0}
+.si-text{font-size:14px;font-weight:600}
+.si-meta{font-size:11px;color:var(--muted);margin-top:2px}
+
+.empty{text-align:center;padding:36px 16px;color:var(--muted)}
+.empty .eico{font-size:44px;margin-bottom:10px}
+.empty p{font-size:13px}
+
+/* ── SETTINGS ── */
+.sync-status-box{text-align:center;padding:12px;border-radius:12px;margin-bottom:14px;font-size:13px;font-weight:600;transition:all .3s}
+.sync-status-box.ok{background:#E8F5E9;color:#2E7D32}
+.sync-status-box.syncing{background:#FFF9C4;color:#F57F17}
+.sync-status-box.error{background:#FFEBEE;color:#C62828}
+.sync-status-box.unset{background:#F5F5F5;color:#888}
+.step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
+.step-num{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#FF6B9D,#A855F7);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;margin-top:1px}
+.step-title{font-size:13px;font-weight:700;margin-bottom:3px}
+.step-desc{font-size:12px;color:#555;line-height:1.6}
+.step-desc b{color:#333}
+.step-desc a{color:#A855F7;text-decoration:none}
+
+/* ── MISC ── */
+.toast{position:fixed;top:22px;left:50%;transform:translateX(-50%);background:#2D2D2D;color:#fff;padding:9px 20px;border-radius:20px;font-size:13px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;max-width:92%}
+.toast.show{opacity:1}
+.last-sync-label{font-size:11px;color:var(--muted);text-align:center;margin-top:6px}
+.update-badge{display:inline-block;background:#FF8C42;color:#fff;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;margin-left:6px;vertical-align:middle}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>🐱 夫妻共同記帳</h1>
+  <div class="header-cat">兩隻貓咪管好錢包 🐾</div>
+  <div class="sync-badge" id="syncBadge">⚪ 未設定同步</div>
+  <div class="person-sel">
+    <button class="psn-btn husband active" onclick="setPerson('老公',this)">🐱 老公</button>
+    <button class="psn-btn wife" onclick="setPerson('老婆',this)">🐱 老婆</button>
+  </div>
+</div>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="family-card">
+    <div class="fc-title">🏠 家庭總覽</div>
+    <div class="fc-row">
+      <div><div class="fc-label">總收入</div><div class="fc-amount" id="fcIncome">HK$0</div></div>
+      <div style="text-align:right"><div class="fc-label">總支出</div><div class="fc-amount" id="fcExpense">HK$0</div></div>
+    </div>
+    <hr class="fc-divider">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div class="fc-label">家庭結餘</div>
+      <div class="fc-amount" id="fcBalance">HK$0</div>
+    </div>
+  </div>
+  <div class="indiv-grid">
+    <div class="indiv-card">
+      <div class="person-badge badge-husband">🐱 老公</div>
+      <div class="ic-label">收入</div><div class="ic-amount clr-income" id="hIncome">HK$0</div>
+      <div class="ic-label">支出</div><div class="ic-amount clr-expense" id="hExpense">HK$0</div>
+      <div class="ic-label">結餘</div><div class="ic-amount" id="hBalance">HK$0</div>
+    </div>
+    <div class="indiv-card">
+      <div class="person-badge badge-wife">🐱 老婆</div>
+      <div class="ic-label">收入</div><div class="ic-amount clr-income" id="wIncome">HK$0</div>
+      <div class="ic-label">支出</div><div class="ic-amount clr-expense" id="wExpense">HK$0</div>
+      <div class="ic-label">結餘</div><div class="ic-amount" id="wBalance">HK$0</div>
+    </div>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div class="card-title" style="margin-bottom:0">📋 最近記錄</div>
+      <button onclick="fetchFromSheets()" style="background:none;border:none;font-size:18px;cursor:pointer">🔄</button>
+    </div>
+    <div id="recentList"></div>
+    <div class="card-paw">🐾</div>
+  </div>
+</div>
+
+<!-- ADD -->
+<div class="page" id="page-add">
+  <div class="card form-section">
+    <div class="form-header">🐾 記帳 — <span id="addingFor">老公</span></div>
+    <div class="fg">
+      <label class="flabel">日期</label>
+      <input type="date" class="finput" id="txDate">
+    </div>
+    <div class="fg">
+      <label class="flabel">類型</label>
+      <div class="type-toggle">
+        <button class="tbtn expense active" id="btnExp" onclick="setType('支出')">💸 支出</button>
+        <button class="tbtn income" id="btnInc" onclick="setType('收入')">💰 收入</button>
+      </div>
+    </div>
+    <div class="fg">
+      <label class="flabel">分類</label>
+      <div class="cat-grid" id="catGrid"></div>
+    </div>
+    <div class="fg">
+      <label class="flabel">金額 (HK$)</label>
+      <input type="number" class="finput" id="txAmount" placeholder="0.00" min="0" step="0.01">
+    </div>
+    <div class="fg">
+      <label class="flabel">備註（選填）</label>
+      <input type="text" class="finput" id="txNote" placeholder="喵～輸入備註...">
+    </div>
+    <button class="btn-submit" id="submitBtn" onclick="addTx()">🐾 確認記帳</button>
+    <div class="card-paw">🐾</div>
+  </div>
+</div>
+
+<!-- CHARTS -->
+<div class="page" id="page-charts">
+  <div class="chart-filter-card">
+    <div style="font-size:13px;font-weight:700;margin-bottom:10px">📊 圖表篩選</div>
+    <div class="range-pills">
+      <div class="rpill active" onclick="setRange('thisWeek',this)">本週</div>
+      <div class="rpill" onclick="setRange('thisMonth',this)">本月</div>
+      <div class="rpill" onclick="setRange('lastMonth',this)">上月</div>
+      <div class="rpill" onclick="setRange('3m',this)">近3個月</div>
+      <div class="rpill" onclick="setRange('custom',this)">自訂</div>
+    </div>
+    <div class="custom-row" id="customRow">
+      <input type="date" class="fsel" id="cfFrom" onchange="updateCharts()">
+      <span style="color:#aaa;font-size:12px">至</span>
+      <input type="date" class="fsel" id="cfTo" onchange="updateCharts()">
+    </div>
+    <select class="fsel" style="width:100%;margin-top:8px" id="chartPerson" onchange="updateCharts()">
+      <option value="all">🐾 全家</option>
+      <option value="老公">🐱 老公</option>
+      <option value="老婆">🐱 老婆</option>
+    </select>
+  </div>
+  <div class="card"><div class="card-title">💸 支出分類比例</div><div class="chart-wrap"><canvas id="cExpPie"></canvas></div><div class="card-paw">🐾</div></div>
+  <div class="card"><div class="card-title">💰 收入分類比例</div><div class="chart-wrap"><canvas id="cIncPie"></canvas></div><div class="card-paw">🐾</div></div>
+  <div class="card"><div class="card-title">🐱 老公 vs 老婆 支出對比</div><div class="chart-wrap"><canvas id="cCoupleBar"></canvas></div><div class="card-paw">🐾</div></div>
+  <div class="card" style="margin-bottom:14px"><div class="card-title">📈 收支趨勢</div><div class="chart-wrap"><canvas id="cTrend"></canvas></div><div class="card-paw">🐾</div></div>
+</div>
+
+<!-- SHOPPING LIST -->
+<div class="page" id="page-list">
+  <div class="list-hero">
+    <span class="cat-mascot">🛒</span>
+    <div class="list-hero-title">購物清單 🐾</div>
+    <div class="list-hero-sub" id="listHeroSub">喵～今日要買咩呀？</div>
+  </div>
+
+  <div class="list-stats">
+    <div class="stat-pill"><div class="sp-num" id="statPending">0</div><div class="sp-label">待購買 🐱</div></div>
+    <div class="stat-pill"><div class="sp-num" id="statDone" style="color:#2E7D32">0</div><div class="sp-label">已購買 ✅</div></div>
+    <div class="stat-pill"><div class="sp-num" id="statTotal" style="color:var(--muted)">0</div><div class="sp-label">合計 📦</div></div>
+  </div>
+
+  <div class="card">
+    <div class="flabel" style="margin-bottom:8px">➕ 加入購買項目</div>
+    <div class="list-add-row">
+      <input type="text" class="finput" id="listInput" placeholder="例如：貓糧、蘋果、洗頭水...">
+      <select class="fsel" id="listPerson">
+        <option value="共同">👫 共同</option>
+        <option value="老公">🐱 老公</option>
+        <option value="老婆">🐱 老婆</option>
+      </select>
+    </div>
+    <button class="btn-cat" onclick="addListItem()">🐾 加入清單</button>
+    <div class="card-paw">🐾</div>
+  </div>
+
+  <div class="filter-row">
+    <select class="fsel" id="listFilter" onchange="renderList()">
+      <option value="all">全部項目</option>
+      <option value="pending">待購買</option>
+      <option value="done">已購買</option>
+    </select>
+    <button class="btn-clear" onclick="clearDoneItems()">🗑️ 清除已購</button>
+  </div>
+
+  <div class="card" id="shopListEl">
+    <div class="empty"><div class="eico">😿</div><p>清單係空嘅，快加入要買嘅嘢！喵～</p></div>
+  </div>
+</div>
+
+<!-- RECORDS -->
+<div class="page" id="page-records">
+  <div style="margin-top:14px">
+    <button class="btn-secondary" onclick="exportCSV()">📥 匯出 Excel (CSV)</button>
+    <div class="filter-row">
+      <select class="fsel" id="fPerson" onchange="renderRec()">
+        <option value="all">全部成員</option>
+        <option value="老公">🐱 老公</option>
+        <option value="老婆">🐱 老婆</option>
+      </select>
+      <select class="fsel" id="fType" onchange="renderRec()">
+        <option value="all">全部類型</option>
+        <option value="收入">💰 收入</option>
+        <option value="支出">💸 支出</option>
+      </select>
+    </div>
+    <div class="card" id="recList"></div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="page" id="page-settings">
+  <div style="margin-top:14px">
+    <div class="card">
+      <div style="font-size:15px;font-weight:800;margin-bottom:14px">⚙️ 同步設定 🐾</div>
+      <div class="sync-status-box unset" id="syncStatusBox">⚪ 未設定 — 請輸入 Apps Script 網址</div>
+      <div class="fg">
+        <label class="flabel">Apps Script 網址</label>
+        <input type="url" class="finput" id="apiUrlInput" placeholder="https://script.google.com/macros/s/...">
+        <div style="font-size:11px;color:#888;margin-top:4px">⚠️ 若已部署舊版，請使用 <b>Code_gs_v2.txt</b> 重新部署以支援購物清單同步</div>
+      </div>
+      <button class="btn-submit" style="margin-bottom:10px" onclick="saveApiUrl()">💾 儲存並測試連線</button>
+      <button class="btn-secondary" onclick="fetchFromSheets()">🔄 立即同步</button>
+      <div class="last-sync-label" id="lastSyncLabel"></div>
+    </div>
+    <div class="card">
+      <div style="font-size:14px;font-weight:800;margin-bottom:14px">📋 設定步驟 <span class="update-badge">已更新</span></div>
+      <div class="step"><div class="step-num">1</div><div><div class="step-title">建立 Google Sheet</div><div class="step-desc">開啟 <a href="https://sheets.google.com" target="_blank">sheets.google.com</a>，新建試算表</div></div></div>
+      <div class="step"><div class="step-num">2</div><div><div class="step-title">開啟 Apps Script</div><div class="step-desc">試算表選單：<b>擴充功能 → Apps Script</b></div></div></div>
+      <div class="step"><div class="step-num">3</div><div><div class="step-title">貼上 v2 程式碼</div><div class="step-desc">刪除全部預設代碼，貼上 <b>Code_gs_v2.txt</b> 內容，按 💾 儲存</div></div></div>
+      <div class="step"><div class="step-num">4</div><div><div class="step-title">部署 Web App</div><div class="step-desc"><b>部署 → 新增部署 → 網頁應用程式</b><br>執行身份：<b>「我」</b> ／ 存取：<b>「所有人」</b><br>點部署 → 授權 → 複製網址</div></div></div>
+      <div class="step" style="margin-bottom:0"><div class="step-num">5</div><div><div class="step-title">兩人同用一條網址</div><div class="step-desc">老公老婆各自開啟 HTML，設定頁貼上<b>同一條 URL</b> 即可 🎉</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="nitem active" onclick="goPage('home',this)"><span class="nicon">🏠</span>主頁</button>
+  <button class="nitem" onclick="goPage('add',this)"><span class="nicon">➕</span>記帳</button>
+  <button class="nitem" onclick="goPage('charts',this)"><span class="nicon">📊</span>圖表</button>
+  <button class="nitem cat-nav" onclick="goPage('list',this)"><span class="nicon">🐾</span>購物</button>
+  <button class="nitem" onclick="goPage('records',this)"><span class="nicon">📋</span>紀錄</button>
+  <button class="nitem" onclick="goPage('settings',this)"><span class="nicon">⚙️</span>設定</button>
+</nav>
+
+<script>
+// ── CATEGORIES ───────────────────────────────────────────────
+const CATS = {
+  收入:[
+    {n:'薪金',i:'💼'},{n:'獎金',i:'🎁'},{n:'投資收益',i:'📈'},
+    {n:'租金收入',i:'🏠'},{n:'兼職收入',i:'💪'},{n:'利息收入',i:'🏦'},
+    {n:'股息',i:'💹'},{n:'政府補貼',i:'🏛️'},{n:'退稅',i:'💰'},
+    {n:'售賣收入',i:'🛒'},{n:'佣金',i:'🤝'},{n:'其他收入',i:'✨'}
+  ],
+  支出:[
+    {n:'飲食',i:'🍜'},{n:'飲品/咖啡',i:'☕'},{n:'超市',i:'🛒'},
+    {n:'交通',i:'🚇'},{n:'購物',i:'🛍️'},{n:'娛樂',i:'🎬'},
+    {n:'住屋/租金',i:'🏡'},{n:'水電煤',i:'💡'},{n:'電話/網絡',i:'📱'},
+    {n:'醫療',i:'🏥'},{n:'保險',i:'🛡️'},{n:'教育',i:'📚'},
+    {n:'旅遊',i:'✈️'},{n:'美容護膚',i:'💄'},{n:'健身',i:'🏋️'},
+    {n:'寵物',i:'🐾'},{n:'禮物',i:'🎀'},{n:'汽車/泊車',i:'🚗'},
+    {n:'家居用品',i:'🛋️'},{n:'其他支出',i:'📦'}
+  ]
+};
+
+// ── STATE ────────────────────────────────────────────────────
+let curPerson='老公', curType='支出', selCat='', chartRange='thisMonth';
+let txs        = JSON.parse(localStorage.getItem('coupletxs')  || '[]');
+let shopList   = JSON.parse(localStorage.getItem('coupleShop') || '[]');
+let apiUrl     = localStorage.getItem('apiUrl') || '';
+let syncStat   = 'unset';
+let lastSyncTime = null;
+let isFetching = false;
+let charts     = {};
+
+// ── INIT ─────────────────────────────────────────────────────
+function init() {
+  document.getElementById('txDate').value = new Date().toISOString().split('T')[0];
+  if (apiUrl) document.getElementById('apiUrlInput').value = apiUrl;
+  document.getElementById('listInput').addEventListener('keypress', e => { if(e.key==='Enter') addListItem(); });
+  renderCats(); updateSummary(); renderRec(); renderList(); initCharts(); updateSettingsStatus();
+  if (apiUrl) fetchFromSheets();
+  setInterval(() => { if (!document.hidden && apiUrl) fetchFromSheets(); }, 30000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && apiUrl) fetchFromSheets(); });
+}
+
+// ── PERSON / TYPE ─────────────────────────────────────────────
+function setPerson(p, btn) {
+  curPerson = p;
+  document.querySelectorAll('.psn-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('addingFor').textContent = p;
+}
+function setType(t) {
+  curType = t; selCat = '';
+  document.getElementById('btnExp').classList.toggle('active', t==='支出');
+  document.getElementById('btnInc').classList.toggle('active', t==='收入');
+  renderCats();
+}
+function renderCats() {
+  const g = document.getElementById('catGrid');
+  const sc = curType==='收入'?'sel-income':'sel-expense';
+  g.innerHTML = CATS[curType].map(c =>
+    `<div class="cpill${selCat===c.n?' '+sc:''}" onclick="pickCat('${c.n}',this)">${c.i} ${c.n}</div>`
+  ).join('');
+}
+function pickCat(n, el) {
+  selCat = n;
+  const cls = curType==='收入'?'sel-income':'sel-expense';
+  document.querySelectorAll('.cpill').forEach(p => p.classList.remove('sel-income','sel-expense'));
+  el.classList.add(cls);
+}
+
+// ── TRANSACTIONS ─────────────────────────────────────────────
+async function addTx() {
+  const date=document.getElementById('txDate').value;
+  const amt=parseFloat(document.getElementById('txAmount').value);
+  const note=document.getElementById('txNote').value.trim();
+  if (!date){toast('請選擇日期');return}
+  if (!selCat){toast('請選擇分類喵～');return}
+  if (!amt||amt<=0){toast('請輸入正確金額');return}
+  const tx={id:Date.now(),person:curPerson,type:curType,category:selCat,amount:amt,note,date};
+  txs.unshift(tx); saveTxs(); resetForm(); updateSummary(); renderRec();
+  goPage('home', document.querySelector('.nitem'));
+  toast('🐾 記帳成功喵！');
+  document.getElementById('submitBtn').disabled=true;
+  if (apiUrl) await pushAdd(tx);
+  document.getElementById('submitBtn').disabled=false;
+}
+function resetForm(){document.getElementById('txAmount').value='';document.getElementById('txNote').value='';selCat='';renderCats();}
+async function delTx(id){
+  if(!confirm('確定刪除？喵'))return;
+  txs=txs.filter(t=>t.id!==id);saveTxs();updateSummary();renderRec();updateCharts();toast('已刪除 🐾');
+  if(apiUrl) await pushDelete(id);
+}
+function saveTxs(){localStorage.setItem('coupletxs',JSON.stringify(txs));}
+
+// ── SHOPPING LIST ─────────────────────────────────────────────
+async function addListItem() {
+  const text = document.getElementById('listInput').value.trim();
+  const by   = document.getElementById('listPerson').value;
+  if (!text){toast('請輸入購買項目喵～');return}
+  const item = {id:Date.now(), text, addedBy:by, done:false, date:new Date().toISOString().split('T')[0]};
+  shopList.unshift(item); saveShop(); renderList();
+  document.getElementById('listInput').value='';
+  toast('🐾 已加入購物清單！');
+  if (apiUrl) await pushListAdd(item);
+}
+async function toggleListItem(id) {
+  const item = shopList.find(i=>i.id===id);
+  if (!item) return;
+  item.done = !item.done;
+  saveShop(); renderList();
+  if (apiUrl) await pushListToggle(id, item.done);
+}
+async function deleteListItem(id) {
+  shopList = shopList.filter(i=>i.id!==id);
+  saveShop(); renderList(); toast('已刪除');
+  if (apiUrl) await pushListDelete(id);
+}
+async function clearDoneItems() {
+  const cnt = shopList.filter(i=>i.done).length;
+  if (!cnt){toast('沒有已購買項目');return}
+  if (!confirm(`確定清除 ${cnt} 個已購買項目？喵`)) return;
+  shopList = shopList.filter(i=>!i.done);
+  saveShop(); renderList(); toast('🐾 已清除');
+  if (apiUrl) await pushListClearDone();
+}
+function saveShop(){localStorage.setItem('coupleShop',JSON.stringify(shopList));}
+
+function renderList() {
+  const f = document.getElementById('listFilter').value;
+  let items = shopList;
+  if (f==='pending') items=shopList.filter(i=>!i.done);
+  else if (f==='done') items=shopList.filter(i=>i.done);
+  // sort: undone first
+  items = [...items].sort((a,b)=>a.done-b.done);
+  const pending=shopList.filter(i=>!i.done).length;
+  const done=shopList.filter(i=>i.done).length;
+  document.getElementById('statPending').textContent=pending;
+  document.getElementById('statDone').textContent=done;
+  document.getElementById('statTotal').textContent=shopList.length;
+  const subs=['喵～今日要買咩呀？','記住唔好漏買喵！','😺 購物愉快！','🐾 快啲買完返屋企'];
+  document.getElementById('listHeroSub').textContent=pending>0?`仲有 ${pending} 件未買喵！`:subs[Math.floor(Math.random()*subs.length)];
+  const el=document.getElementById('shopListEl');
+  if(!items.length){el.innerHTML='<div class="empty"><div class="eico">😸</div><p>'+( f==='all'?'清單係空嘅，快加入要買嘅嘢！喵～':f==='done'?'未有已購買項目 🐾':'所有嘢都買晒喇！😺 辛苦喵！')+'</p></div>';return}
+  el.innerHTML=items.map(item=>{
+    const pi=item.addedBy==='老公'?'🐱':'item.addedBy'==='老婆'?'🐱':'👫';
+    return `<div class="shop-item${item.done?' done':''}" id="si-${item.id}">
+      <div class="si-check" onclick="toggleListItem(${item.id})">${item.done?'✅':'⬜'}</div>
+      <div class="si-info">
+        <div class="si-text">${item.text}</div>
+        <div class="si-meta">${item.addedBy} · ${item.date}</div>
+      </div>
+      <button class="rec-del" onclick="deleteListItem(${item.id})">🗑️</button>
+    </div>`;
+  }).join('');
+}
+
+// ── GOOGLE SHEETS SYNC ────────────────────────────────────────
+async function fetchFromSheets() {
+  if (!apiUrl||isFetching) return;
+  isFetching=true; setSyncStat('syncing');
+  try {
+    const res=await fetch(apiUrl,{redirect:'follow'});
+    const json=await res.json();
+    if (json.success) {
+      // Support both old format {data:[]} and new {transactions:[],shoppingList:[]}
+      const txRaw = json.transactions || json.data || [];
+      txs = txRaw.map(r=>({
+        id:Number(r.id), date:String(r.date).split('T')[0],
+        person:String(r.person), type:String(r.type),
+        category:String(r.category), amount:Number(r.amount), note:String(r.note||'')
+      })).sort((a,b)=>b.id-a.id);
+      saveTxs();
+      if (json.shoppingList) {
+        shopList = json.shoppingList.map(r=>({
+          id:Number(r.id), text:String(r.text), addedBy:String(r.addedBy),
+          done:r.done===true||r.done==='TRUE'||r.done===1,
+          date:String(r.date||'')
+        })).sort((a,b)=>b.id-a.id);
+        saveShop();
+        renderList();
+      }
+      lastSyncTime=new Date(); setSyncStat('online');
+      updateSummary(); renderRec();
+      if(document.getElementById('page-charts').classList.contains('active')) updateCharts();
+      updateSettingsStatus();
+    } else { setSyncStat('error'); }
+  } catch(e){ console.error(e); setSyncStat('error'); }
+  isFetching=false;
+}
+async function api(body){
+  try{await fetch(apiUrl,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body)});}
+  catch(e){console.error(e);setSyncStat('error');}
+}
+async function pushAdd(tx){await api({action:'add',tx});await fetchFromSheets();}
+async function pushDelete(id){await api({action:'delete',id});await fetchFromSheets();}
+async function pushListAdd(item){await api({action:'listAdd',item});await fetchFromSheets();}
+async function pushListToggle(id,done){await api({action:'listToggle',id,done});await fetchFromSheets();}
+async function pushListDelete(id){await api({action:'listDelete',id});await fetchFromSheets();}
+async function pushListClearDone(){await api({action:'listClearDone'});await fetchFromSheets();}
+
+function setSyncStat(s){
+  syncStat=s;
+  const badge=document.getElementById('syncBadge');
+  const m={
+    online:{t:'🟢 已同步',c:'color:rgba(200,255,200,.95)'},
+    syncing:{t:'🐾 同步中...',c:'color:#FFF9C4'},
+    error:{t:'🔴 同步失敗',c:'color:#FFCDD2'},
+    unset:{t:'⚪ 未設定同步',c:'color:rgba(255,255,255,.6)'}
+  }[s]||{t:'⚪',c:''};
+  if(s==='online'&&lastSyncTime){const mn=Math.floor((new Date()-lastSyncTime)/60000);m.t=mn<1?'🟢 剛剛同步':`🟢 ${mn}分鐘前`;}
+  badge.textContent=m.t; badge.setAttribute('style',m.c+';font-size:11px;margin-top:2px;display:inline-block');
+}
+async function saveApiUrl(){
+  const url=document.getElementById('apiUrlInput').value.trim();
+  if(!url){toast('請輸入網址');return}
+  if(!url.includes('script.google.com')){toast('請輸入正確的 Apps Script 網址');return}
+  apiUrl=url; localStorage.setItem('apiUrl',url); toast('🐾 測試連線中...');
+  await fetchFromSheets(); updateSettingsStatus();
+}
+function updateSettingsStatus(){
+  const box=document.getElementById('syncStatusBox');
+  const label=document.getElementById('lastSyncLabel');
+  if(!apiUrl){box.className='sync-status-box unset';box.textContent='⚪ 未設定 — 請輸入 Apps Script 網址';}
+  else if(syncStat==='online'){box.className='sync-status-box ok';box.textContent='🟢 喵～連線成功！資料即時同步中';}
+  else if(syncStat==='syncing'){box.className='sync-status-box syncing';box.textContent='🐾 同步中...';}
+  else if(syncStat==='error'){box.className='sync-status-box error';box.textContent='🔴 連線失敗 — 請檢查網址或重新部署';}
+  if(lastSyncTime) label.textContent='上次同步：'+lastSyncTime.toLocaleTimeString('zh-HK');
+}
+
+// ── SUMMARY ──────────────────────────────────────────────────
+function updateSummary(){
+  const s=(p,t)=>txs.filter(x=>(p?x.person===p:true)&&x.type===t).reduce((a,x)=>a+x.amount,0);
+  const hI=s('老公','收入'),hE=s('老公','支出'),wI=s('老婆','收入'),wE=s('老婆','支出');
+  const tI=hI+wI,tE=hE+wE,tB=tI-tE;
+  sa('hIncome',hI,'clr-income');sa('hExpense',hE,'clr-expense');sb('hBalance',hI-hE);
+  sa('wIncome',wI,'clr-income');sa('wExpense',wE,'clr-expense');sb('wBalance',wI-wE);
+  document.getElementById('fcIncome').textContent=fmt(tI);
+  document.getElementById('fcExpense').textContent=fmt(tE);
+  document.getElementById('fcBalance').textContent=fmt(Math.abs(tB))+(tB<0?' (超支)':'');
+  renderRecent();
+}
+function sa(id,v,cls){const e=document.getElementById(id);e.textContent=fmt(v);e.className='ic-amount '+cls;}
+function sb(id,v){const e=document.getElementById(id);e.textContent=fmt(v);e.className='ic-amount '+(v>=0?'clr-pos':'clr-neg');}
+function renderRecent(){const el=document.getElementById('recentList');const r=txs.slice(0,5);el.innerHTML=r.length?r.map(t=>txHtml(t)).join(''):emptyHtml();}
+
+// ── RECORDS ──────────────────────────────────────────────────
+function renderRec(){
+  const fp=document.getElementById('fPerson').value,ft=document.getElementById('fType').value;
+  const f=txs.filter(t=>(fp==='all'||t.person===fp)&&(ft==='all'||t.type===ft));
+  const el=document.getElementById('recList');
+  if(!f.length){el.innerHTML=emptyHtml();return}
+  const grp={};f.forEach(t=>{(grp[t.date]=grp[t.date]||[]).push(t);});
+  el.innerHTML=Object.keys(grp).sort((a,b)=>b.localeCompare(a)).map(d=>
+    `<div class="date-group">${fmtDate(d)}</div>${grp[d].map(t=>txHtml(t,true)).join('')}`
+  ).join('');
+}
+function txHtml(t,showDel=false){
+  const cat=CATS[t.type].find(c=>c.n===t.category);
+  const ico=cat?cat.i:(t.type==='收入'?'💰':'💸');
+  const bg=t.type==='收入'?'#E8F5E9':'#FFEBEE',ac=t.type==='收入'?'#2E7D32':'#C62828',sg=t.type==='收入'?'+':'-';
+  return `<div class="rec-item"><div class="rec-icon" style="background:${bg}">${ico}</div>
+    <div class="rec-info"><div class="rec-cat">${t.category} ${t.person==='老公'?'🐱':'🐱'}</div>
+    <div class="rec-meta">${fmtDate(t.date)}${t.note?' · '+t.note:''}</div></div>
+    <div class="rec-amt" style="color:${ac}">${sg}HK$${t.amount.toFixed(2)}</div>
+    ${showDel?`<button class="rec-del" onclick="delTx(${t.id})">🗑️</button>`:''}</div>`;
+}
+function emptyHtml(){return'<div class="empty"><div class="eico">😿</div><p>喵～暫無記錄</p></div>';}
+
+// ── EXPORT ───────────────────────────────────────────────────
+function exportCSV(){
+  if(!txs.length){toast('暫無資料可匯出');return}
+  const rows=[['日期','成員','類型','分類','金額(HK$)','備註']];
+  txs.forEach(t=>rows.push([t.date,t.person,t.type,t.category,t.amount.toFixed(2),t.note||'']));
+  const tI=txs.filter(t=>t.type==='收入').reduce((s,t)=>s+t.amount,0);
+  const tE=txs.filter(t=>t.type==='支出').reduce((s,t)=>s+t.amount,0);
+  rows.push([],['','','家庭總收入','',tI.toFixed(2),''],['','','家庭總支出','',tE.toFixed(2),''],['','','家庭結餘','',(tI-tE).toFixed(2),'']);
+  const csv='\uFEFF'+rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+  a.download=`夫妻記帳_${new Date().toISOString().split('T')[0]}.csv`;a.click();toast('✅ 匯出成功 喵！');
+}
+
+// ── CHARTS ───────────────────────────────────────────────────
+const PAL=['#FF6B9D','#A855F7','#5B8CFF','#4ECDC4','#FFD166','#06D6A0','#EF476F','#118AB2','#FFB347','#C77DFF','#80ED99','#FF9F1C','#2EC4B6','#E71D36','#FF9F43','#48CAE4','#7B2FBE','#FB8500','#06A77D','#D62246'];
+function initCharts(){
+  const mk=(id,type,data,opts)=>new Chart(document.getElementById(id),{type,data,options:{maintainAspectRatio:false,...opts}});
+  const pie={plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:11}}}};
+  charts.expPie=mk('cExpPie','doughnut',{labels:[],datasets:[{data:[],backgroundColor:PAL}]},pie);
+  charts.incPie=mk('cIncPie','doughnut',{labels:[],datasets:[{data:[],backgroundColor:PAL}]},pie);
+  charts.coupleBar=mk('cCoupleBar','bar',{labels:[],datasets:[
+    {label:'🐱 老公',data:[],backgroundColor:'rgba(91,140,255,.75)',borderColor:'#5B8CFF',borderWidth:1.5},
+    {label:'🐱 老婆',data:[],backgroundColor:'rgba(255,107,157,.75)',borderColor:'#FF6B9D',borderWidth:1.5}
+  ]},{plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:11}}},scales:{y:{beginAtZero:true,ticks:{callback:v=>'$'+v}}}});
+  charts.trend=mk('cTrend','line',{labels:[],datasets:[
+    {label:'收入',data:[],borderColor:'#2E7D32',backgroundColor:'rgba(46,125,50,.1)',tension:.4,fill:true,pointRadius:3},
+    {label:'支出',data:[],borderColor:'#C62828',backgroundColor:'rgba(198,40,40,.1)',tension:.4,fill:true,pointRadius:3}
+  ]},{plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:11}}},scales:{y:{beginAtZero:true,ticks:{callback:v=>'$'+v}}}});
+  updateCharts();
+}
+function getFiltered(){
+  const today=new Date();let from=null,to=null;
+  if(chartRange==='thisWeek'){const d=today.getDay();from=new Date(new Date().setDate(today.getDate()-d+(d===0?-6:1)));to=new Date();}
+  else if(chartRange==='thisMonth'){from=new Date(today.getFullYear(),today.getMonth(),1);to=new Date();}
+  else if(chartRange==='lastMonth'){from=new Date(today.getFullYear(),today.getMonth()-1,1);to=new Date(today.getFullYear(),today.getMonth(),0);}
+  else if(chartRange==='3m'){from=new Date(today.getFullYear(),today.getMonth()-2,1);to=new Date();}
+  else if(chartRange==='custom'){const f=document.getElementById('cfFrom').value,t=document.getElementById('cfTo').value;from=f?new Date(f):null;to=t?new Date(t):null;}
+  const fS=from?from.toISOString().split('T')[0]:null,tS=to?to.toISOString().split('T')[0]:null;
+  const p=document.getElementById('chartPerson').value;
+  return txs.filter(t=>(p==='all'||t.person===p)&&(!fS||t.date>=fS)&&(!tS||t.date<=tS));
+}
+function setRange(r,el){chartRange=r;document.querySelectorAll('.rpill').forEach(b=>b.classList.remove('active'));el.classList.add('active');document.getElementById('customRow').classList.toggle('show',r==='custom');updateCharts();}
+function updateCharts(){
+  const f=getFiltered();const ecat={},icat={},he={},we={},di={},de={};
+  f.forEach(t=>{
+    if(t.type==='支出'){ecat[t.category]=(ecat[t.category]||0)+t.amount;(t.person==='老公'?he:we)[t.category]=((t.person==='老公'?he:we)[t.category]||0)+t.amount;de[t.date]=(de[t.date]||0)+t.amount;}
+    else{icat[t.category]=(icat[t.category]||0)+t.amount;di[t.date]=(di[t.date]||0)+t.amount;}
+  });
+  charts.expPie.data.labels=Object.keys(ecat);charts.expPie.data.datasets[0].data=Object.values(ecat);charts.expPie.update();
+  charts.incPie.data.labels=Object.keys(icat);charts.incPie.data.datasets[0].data=Object.values(icat);charts.incPie.update();
+  const ac=[...new Set([...Object.keys(he),...Object.keys(we)])];
+  charts.coupleBar.data.labels=ac;charts.coupleBar.data.datasets[0].data=ac.map(c=>he[c]||0);charts.coupleBar.data.datasets[1].data=ac.map(c=>we[c]||0);charts.coupleBar.update();
+  const ds=[...new Set([...Object.keys(di),...Object.keys(de)])].sort();
+  charts.trend.data.labels=ds.map(d=>d.slice(5));charts.trend.data.datasets[0].data=ds.map(d=>di[d]||0);charts.trend.data.datasets[1].data=ds.map(d=>de[d]||0);charts.trend.update();
+}
+
+// ── NAV ──────────────────────────────────────────────────────
+function goPage(p,btn){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nitem').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  btn.classList.add('active');
+  if(p==='charts')updateCharts();
+  if(p==='settings')updateSettingsStatus();
+}
+
+// ── UTILS ─────────────────────────────────────────────────────
+function fmt(n){return'HK$'+Math.abs(n).toLocaleString('en-HK',{minimumFractionDigits:0,maximumFractionDigits:0});}
+function fmtDate(s){const d=new Date(s+'T00:00:00');const days=['日','一','二','三','四','五','六'];return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日(${days[d.getDay()]})`;}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+
+init();
+</script>
+</body>
+</html>
