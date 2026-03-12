@@ -11,12 +11,11 @@
   --income:#2E7D32;--expense:#C62828;--bg:#FDF6FF;--card:#fff;--text:#2D2D2D;--muted:#888;
   --border:#EDE8F5;--shadow:0 2px 16px rgba(120,80,180,.08);}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:72px}
-.header{background:linear-gradient(135deg,#FF6B9D,#A855F7,#5B8CFF);color:#fff;padding:16px 16px 14px;text-align:center;position:relative;overflow:hidden;border-radius:0 0 16px 16px;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
+.header{background:linear-gradient(135deg,#FF6B9D,#A855F7,#5B8CFF);color:#fff;padding:16px 16px 14px;text-align:center;position:relative;overflow:hidden;border-radius:0 0 16px 16px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
 .header::before{content:'🐾';position:absolute;right:12px;top:12px;font-size:20px;opacity:.3;transform:rotate(15deg)}
-.header::after{content:'🐾';position:absolute;left:12px;top:10px;font-size:14px;opacity:.2;transform:rotate(-20deg)}
-.header h1{font-size:18px;font-weight:800;letter-spacing:0.5px}
-.header-cat{font-size:11px;opacity:.9;margin-top:3px}
-.sync-badge{font-size:10px;display:inline-block;margin-top:6px;background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:10px}
+.header h1{font-size:18px;font-weight:800;letter-spacing:.5px}
+.header-sub{font-size:11px;opacity:.9;margin-top:3px}
+.sync-badge{font-size:10px;display:inline-block;margin-top:6px;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:10px}
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid var(--border);display:flex;z-index:200;box-shadow:0 -2px 12px rgba(120,80,180,.1)}
 .nitem{flex:1;display:flex;flex-direction:column;align-items:center;padding:5px 1px 4px;cursor:pointer;color:var(--muted);font-size:8.5px;border:none;background:none;transition:color .2s}
 .nitem.active{color:var(--primary)}
@@ -37,8 +36,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .badge-husband{background:#EEF2FF;color:var(--husband)}.badge-wife{background:#FFF0F5;color:var(--wife)}
 .ic-label{font-size:10px;color:var(--muted);margin-top:4px}.ic-amount{font-size:15px;font-weight:700}
 .clr-income{color:#2E7D32}.clr-expense{color:#C62828}.clr-pos{color:#2E7D32}.clr-neg{color:#C62828}
-.form-section{margin-top:12px}
-.form-header{font-size:14px;font-weight:800;margin-bottom:13px}
+.form-section{margin-top:12px}.form-header{font-size:14px;font-weight:800;margin-bottom:13px}
 .fg{margin-bottom:12px}
 .flabel{display:block;font-size:11px;font-weight:700;margin-bottom:4px;color:#555}
 .finput{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;background:#FAFBFD;color:var(--text);outline:none;transition:border-color .2s}
@@ -47,12 +45,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .tbtn{flex:1;padding:10px;border:2px solid var(--border);border-radius:10px;background:#fff;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
 .tbtn.expense.active{border-color:#C62828;background:#FFEBEE;color:#C62828}
 .tbtn.income.active{border-color:#2E7D32;background:#E8F5E9;color:#2E7D32}
-
-/* Member Selector styling in Add Page */
 .psn-f.h.active{border-color:var(--husband);background:#EEF2FF;color:var(--husband)}
 .psn-f.w.active{border-color:var(--wife);background:#FFF0F5;color:var(--wife)}
 .psn-f.aa.active{border-color:var(--together);background:#F3E8FF;color:var(--together)}
-
 .cat-grid{display:flex;flex-wrap:wrap;gap:6px}
 .cpill{padding:5px 10px;border:1.5px solid var(--border);border-radius:18px;font-size:11px;cursor:pointer;transition:all .2s;background:#fff;white-space:nowrap}
 .cpill.sel-income{border-color:#2E7D32;background:#E8F5E9;color:#2E7D32}
@@ -65,7 +60,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .rec-item{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
 .rec-item:last-child{border-bottom:none}
 .rec-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-right:10px;flex-shrink:0}
-.rec-info{flex:1;min-width:0}.rec-cat{font-size:12px;font-weight:700}.rec-meta{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.4}
+.rec-info{flex:1;min-width:0}.rec-cat{font-size:12px;font-weight:700}.rec-meta{font-size:10px;color:var(--muted);margin-top:2px}
 .rec-amt{font-size:14px;font-weight:800;white-space:nowrap}
 .rec-del{margin-left:6px;background:none;border:none;color:#ddd;cursor:pointer;font-size:14px;padding:2px;flex-shrink:0}
 .date-group{font-size:10px;font-weight:700;color:var(--muted);padding:7px 0 2px}
@@ -87,22 +82,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .btn-cat{width:100%;padding:12px;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,var(--cat),#FF6B9D);color:#fff;margin-top:9px}
 .list-stats{display:flex;gap:7px;margin-bottom:10px}
 .stat-pill{flex:1;background:#fff;border-radius:12px;padding:9px;text-align:center;box-shadow:var(--shadow)}
-.sp-num{font-size:19px;font-weight:800;color:var(--cat)}
-.sp-label{font-size:9px;color:var(--muted);margin-top:1px}
+.sp-num{font-size:19px;font-weight:800;color:var(--cat)}.sp-label{font-size:9px;color:var(--muted);margin-top:1px}
 .btn-clear{padding:7px 12px;border:1.5px solid #FFCDD2;border-radius:8px;background:#fff;color:#C62828;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap}
-/* Shop item redesign */
-.shop-item{padding:11px 0;border-bottom:1px solid var(--border)}
-.shop-item:last-child{border-bottom:none}
+.shop-item{padding:11px 0;border-bottom:1px solid var(--border)}.shop-item:last-child{border-bottom:none}
 .shop-item-top{display:flex;align-items:center;gap:8px}
 .shop-item.done .si-text{text-decoration:line-through;color:var(--muted)}
-.si-info{flex:1;min-width:0}
-.si-text{font-size:13px;font-weight:600}
-.si-meta{font-size:10px;color:var(--muted);margin-top:2px}
-.si-actions{display:flex;gap:6px;margin-top:7px;padding-left:0}
+.si-info{flex:1;min-width:0}.si-text{font-size:13px;font-weight:600}.si-meta{font-size:10px;color:var(--muted);margin-top:2px}
+.si-actions{display:flex;gap:6px;margin-top:7px}
 .btn-mark-done{flex:1;padding:7px;border:1.5px solid #2E7D32;border-radius:8px;background:#E8F5E9;color:#2E7D32;font-size:11px;font-weight:700;cursor:pointer}
 .btn-mark-undone{flex:1;padding:7px;border:1.5px solid #888;border-radius:8px;background:#F5F5F5;color:#666;font-size:11px;font-weight:700;cursor:pointer}
 .done-badge{font-size:10px;background:#E8F5E9;color:#2E7D32;padding:2px 7px;border-radius:8px;font-weight:700;white-space:nowrap}
-/* CALENDAR */
+/* ── CALENDAR ── */
 .cal-page{margin-top:12px}
 .cal-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .cal-month-title{font-size:15px;font-weight:800}
@@ -112,25 +102,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .cal-dow-cell{text-align:center;font-size:10px;font-weight:700;color:var(--muted);padding:3px 0}
 .cal-dow-cell:first-child{color:#C62828}.cal-dow-cell:last-child{color:var(--cat)}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:12px}
-.cal-cell{min-height:58px;border-radius:9px;padding:4px 2px 3px;cursor:pointer;background:#fff;border:1.5px solid transparent;transition:all .15s;display:flex;flex-direction:column;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cal-cell{min-height:60px;border-radius:9px;padding:4px 2px 3px;cursor:pointer;background:#fff;border:1.5px solid transparent;transition:all .15s;display:flex;flex-direction:column;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.04)}
 .cal-cell:hover{border-color:var(--border)}
 .cal-cell.other-month{opacity:.28;background:#F8F8F8;box-shadow:none}
 .cal-cell.today{background:#FFF0F5;border-color:#FF6B9D}
 .cal-cell.selected{background:linear-gradient(135deg,#FF6B9D,#A855F7);border-color:transparent}
 .cal-cell.selected .cal-day-num{color:#fff;font-weight:800}
 .cal-day-num{font-size:12px;font-weight:600;color:var(--text);line-height:1.5}
-.cal-evs{display:flex;flex-direction:column;gap:2px;width:100%;padding:0 2px}
+.cal-evs{display:flex;flex-direction:column;gap:2px;width:100%;padding:0 2px;margin-top:2px}
 .cal-ev-bar{height:5px;border-radius:3px;width:100%}
 .cal-ev-dot{width:7px;height:7px;border-radius:50%;margin:0 auto}
+/* Event count badge on cell */
+.cal-ev-count{font-size:8px;color:var(--muted);text-align:center;margin-top:1px}
+/* ── Event card (redesigned) ── */
 .cal-selected-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .cal-selected-label{font-size:13px;font-weight:800}
-.cal-ev-card{padding:11px 13px;border-radius:12px;background:#FAFBFD;margin-bottom:8px;border-left:4px solid var(--primary);position:relative}
+.cal-ev-count-label{font-size:10px;color:var(--muted);background:#F3E8FF;padding:2px 8px;border-radius:10px}
+.cal-ev-card{border-radius:14px;background:#FAFBFD;margin-bottom:8px;border-left:4px solid var(--primary);overflow:hidden}
 .cal-ev-card:last-child{margin-bottom:0}
-.cec-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-.cec-title{font-size:13px;font-weight:800;flex:1}
-.cec-actions{display:flex;gap:4px;flex-shrink:0}
-.cec-meta{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.6}
-.cec-person-badge{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:700;margin-top:5px}
+.cec-top{display:flex;align-items:flex-start;justify-content:space-between;padding:11px 12px 7px;gap:8px}
+.cec-title-wrap{flex:1;min-width:0}
+.cec-time-badge{font-size:10px;font-weight:700;background:rgba(0,0,0,.06);padding:2px 7px;border-radius:8px;margin-bottom:4px;display:inline-block}
+.cec-no-time{font-size:10px;color:var(--muted);margin-bottom:4px;display:inline-block}
+.cec-title{font-size:13px;font-weight:800;line-height:1.3}
+.cec-actions{display:flex;gap:4px;flex-shrink:0;padding-top:1px}
+.cec-btn{background:none;border:1.5px solid var(--border);border-radius:8px;padding:4px 7px;cursor:pointer;font-size:13px}
+.cec-body{padding:0 12px 10px;display:flex;flex-direction:column;gap:5px}
+.cec-info-row{display:flex;flex-wrap:wrap;gap:5px}
+.cec-pill{font-size:10px;background:#F0F0F8;color:#555;padding:3px 9px;border-radius:8px;display:flex;align-items:center;gap:3px}
+.cec-note-box{background:#FFFDE7;border-radius:8px;padding:6px 9px;font-size:11px;color:#555;line-height:1.5}
+.cec-person-badge{display:inline-block;padding:3px 9px;border-radius:8px;font-size:10px;font-weight:700;margin-top:1px}
 /* MODAL */
 .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.52);z-index:500;display:none;align-items:flex-end;justify-content:center}
 .modal-overlay.show{display:flex}
@@ -142,8 +143,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .sel-pill{padding:5px 11px;border:1.5px solid var(--border);border-radius:18px;font-size:12px;cursor:pointer;background:#fff;white-space:nowrap}
 .sel-pill.ap{border-color:#A855F7;background:#F3E8FF;color:#7C3AED}
 .sel-pill.ac{border-color:var(--cat);background:#FFF3E0;color:var(--cat)}
-.date-row{display:flex;gap:8px}
-.date-row .fg{flex:1}
+.date-row{display:flex;gap:8px}.date-row .fg{flex:1}
 /* SETTINGS */
 .sync-status-box{text-align:center;padding:11px;border-radius:12px;margin-bottom:13px;font-size:12px;font-weight:600}
 .sync-status-box.ok{background:#E8F5E9;color:#2E7D32}
@@ -206,10 +206,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   </div>
 </div>
 
-<!-- HEADER (已移除全域成員切換，令介面更清晰) -->
+<!-- HEADER -->
 <div class="header">
   <h1>🐱 夫妻共同記帳</h1>
-  <div class="header-cat">兩隻貓咪管好錢包 🐾</div>
+  <div class="header-sub">兩隻貓咪管好錢包 🐾</div>
   <div class="sync-badge" id="syncBadge">⚪ 未設定同步</div>
 </div>
 
@@ -255,7 +255,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
     <div class="form-header">🐾 新增記帳</div>
     <div class="fg"><label class="flabel">日期</label><input type="date" class="finput" id="txDate"></div>
     <div class="fg">
-      <label class="flabel">誰付款？(支援帳單平分)</label>
+      <label class="flabel">誰付款？（支援帳單平分）</label>
       <div class="type-toggle">
         <button class="tbtn psn-f h active" onclick="setAddPerson('老公',this)">🐱 老公</button>
         <button class="tbtn psn-f w" onclick="setAddPerson('老婆',this)">🐱 老婆</button>
@@ -323,7 +323,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
       </select>
     </div>
     <button class="btn-cat" onclick="addListItem()">🐾 加入清單</button>
-    <div class="card-paw">🐾</div>
   </div>
   <div class="filter-row">
     <select class="fsel" id="listFilter" onchange="renderList()">
@@ -350,7 +349,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
     <div class="cal-grid" id="calGrid"></div>
     <div class="card">
       <div class="cal-selected-header">
-        <div class="cal-selected-label" id="calSelLabel">請選擇日期</div>
+        <div>
+          <div class="cal-selected-label" id="calSelLabel">請選擇日期</div>
+          <div class="cal-ev-count-label" id="calEvCountLabel" style="display:none"></div>
+        </div>
         <button class="cal-add-btn" onclick="openCalModal(false)">+ 加入事件</button>
       </div>
       <div id="calEvList"><div class="empty"><div class="eico">📅</div><p>點擊日期查看或加入事件</p></div></div>
@@ -384,18 +386,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
       <div class="fg">
         <label class="flabel">Apps Script 網址</label>
         <input type="url" class="finput" id="apiUrlInput" placeholder="https://script.google.com/macros/s/...">
-        <div style="font-size:10px;color:#888;margin-top:3px">請使用最新版 <b>Code_gs_v5.txt</b> 重新部署以修正時區</div>
+        <div style="font-size:10px;color:#888;margin-top:3px">請使用 <b>Code_gs_v6.txt</b> 重新部署（修正日期 Bug）</div>
       </div>
       <button class="btn-submit" style="margin-bottom:9px" onclick="saveApiUrl()">💾 儲存並測試連線</button>
       <button class="btn-secondary" onclick="fetchFromSheets()">🔄 立即同步</button>
       <div class="last-sync-label" id="lastSyncLabel"></div>
     </div>
     <div class="card" style="margin-bottom:14px">
-      <div style="font-size:13px;font-weight:800;margin-bottom:12px">📋 設定步驟 <span class="update-badge">v6</span></div>
+      <div style="font-size:13px;font-weight:800;margin-bottom:12px">📋 設定步驟 <span class="update-badge">v7</span></div>
       <div class="step"><div class="step-num">1</div><div><div class="step-title">建立 Google Sheet</div><div class="step-desc"><a href="https://sheets.google.com" target="_blank">sheets.google.com</a> 新建試算表</div></div></div>
       <div class="step"><div class="step-num">2</div><div><div class="step-title">Apps Script</div><div class="step-desc">擴充功能 → Apps Script</div></div></div>
-      <div class="step"><div class="step-num">3</div><div><div class="step-title">貼上程式碼</div><div class="step-desc">全選刪除，貼上 <b>Code_gs_v5.txt</b>，💾 儲存</div></div></div>
-      <div class="step"><div class="step-num">4</div><div><div class="step-title">部署 Web App</div><div class="step-desc">部署→新增→網頁應用程式<br>執行身份：我 ／ 存取：所有人 → 授權</div></div></div>
+      <div class="step"><div class="step-num">3</div><div><div class="step-title">貼上程式碼</div><div class="step-desc">全選刪除，貼上 <b>Code_gs_v6.txt</b>，💾 儲存</div></div></div>
+      <div class="step"><div class="step-num">4</div><div><div class="step-title">部署 Web App</div><div class="step-desc">部署 → 管理部署 → ✏️ 編輯 → 更新版本號 → Deploy</div></div></div>
       <div class="step" style="margin-bottom:0"><div class="step-num">5</div><div><div class="step-title">兩人貼上同一 URL</div><div class="step-desc">各自設定頁貼上 URL → 連線成功 🎉</div></div></div>
     </div>
   </div>
@@ -413,7 +415,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 </nav>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────
+// ── CONSTANTS ─────────────────────────────────────────────────
 const CATS={
   收入:[{n:'薪金',i:'💼'},{n:'獎金',i:'🎁'},{n:'投資收益',i:'📈'},{n:'租金收入',i:'🏠'},{n:'兼職收入',i:'💪'},{n:'利息收入',i:'🏦'},{n:'股息',i:'💹'},{n:'政府補貼',i:'🏛️'},{n:'退稅',i:'💰'},{n:'售賣收入',i:'🛒'},{n:'佣金',i:'🤝'},{n:'其他收入',i:'✨'}],
   支出:[{n:'飲食',i:'🍜'},{n:'飲品/咖啡',i:'☕'},{n:'超市',i:'🛒'},{n:'交通',i:'🚇'},{n:'購物',i:'🛍️'},{n:'娛樂',i:'🎬'},{n:'住屋/租金',i:'🏡'},{n:'水電煤',i:'💡'},{n:'電話/網絡',i:'📱'},{n:'醫療',i:'🏥'},{n:'保險',i:'🛡️'},{n:'教育',i:'📚'},{n:'旅遊',i:'✈️'},{n:'美容護膚',i:'💄'},{n:'健身',i:'🏋️'},{n:'寵物',i:'🐾'},{n:'禮物',i:'🎀'},{n:'汽車/泊車',i:'🚗'},{n:'家居用品',i:'🛋️'},{n:'其他支出',i:'📦'}]
@@ -423,7 +425,7 @@ const MONTHS=['一月','二月','三月','四月','五月','六月','七月','�
 const PAL=['#FF6B9D','#A855F7','#5B8CFF','#4ECDC4','#FFD166','#06D6A0','#EF476F','#118AB2','#FFB347','#C77DFF','#80ED99','#FF9F1C','#2EC4B6','#E71D36','#FF9F43','#48CAE4','#7B2FBE','#FB8500','#06A77D','#D62246'];
 
 // ── STATE ─────────────────────────────────────────────────────
-let curAddPerson='老公', curType='支出', selCat='', chartRange='thisMonth';
+let curAddPerson='老公',curType='支出',selCat='',chartRange='thisMonth';
 let txs      =JSON.parse(localStorage.getItem('coupletxs')||'[]');
 let shopList =JSON.parse(localStorage.getItem('coupleShop')||'[]');
 let calEvents=JSON.parse(localStorage.getItem('coupleCalEv')||'[]').map(normalizeEv);
@@ -447,8 +449,29 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 function emptyHtml(m){return `<div class="empty"><div class="eico">😿</div><p>${m}</p></div>`;}
 function evColor(p){return p==='老公'?'#5B8CFF':p==='老婆'?'#FF6B9D':'#A855F7';}
-function normalizeEv(e){return{...e,startDate:e.startDate||e.date||'',endDate:e.endDate||e.startDate||e.date||''};}
-function evOnDate(ev,ds){return ds>=ev.startDate&&ds<=ev.endDate;}
+
+// ★ 核心修復：清理從 Sheets 讀回的日期字串
+//   — 移除 Google Sheets 可能附帶的 ' 前綴
+//   — 移除 ISO 時間部分（T00:00:00.000Z）
+//   — Trim 空白
+function cleanDate(s){
+  if(!s) return '';
+  return String(s).replace(/^'+/,'').split('T')[0].trim();
+}
+
+function normalizeEv(e){
+  return{
+    ...e,
+    startDate: cleanDate(e.startDate||e.date||''),
+    endDate:   cleanDate(e.endDate||e.startDate||e.date||'')
+  };
+}
+function evOnDate(ev,ds){
+  // 嚴格純字串比較，確保結果正確
+  const s=cleanDate(ev.startDate);
+  const e=cleanDate(ev.endDate||ev.startDate);
+  return s&&e&&ds>=s&&ds<=e;
+}
 
 // ── INIT ──────────────────────────────────────────────────────
 function init(){
@@ -463,11 +486,7 @@ function init(){
 }
 
 // ── PERSON / TYPE / CATS ──────────────────────────────────────
-function setAddPerson(p,btn){
-  curAddPerson=p;
-  document.querySelectorAll('.psn-f').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-}
+function setAddPerson(p,btn){curAddPerson=p;document.querySelectorAll('.psn-f').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
 function setType(t){curType=t;selCat='';document.getElementById('btnExp').classList.toggle('active',t==='支出');document.getElementById('btnInc').classList.toggle('active',t==='收入');renderCats();}
 function renderCats(){const g=document.getElementById('catGrid');const sc=curType==='收入'?'sel-income':'sel-expense';g.innerHTML=CATS[curType].map(c=>`<div class="cpill${selCat===c.n?' '+sc:''}" onclick="pickCat('${c.n}',this)">${c.i} ${c.n}</div>`).join('');}
 function pickCat(n,el){selCat=n;const cls=curType==='收入'?'sel-income':'sel-expense';document.querySelectorAll('.cpill').forEach(p=>p.classList.remove('sel-income','sel-expense'));el.classList.add(cls);}
@@ -476,31 +495,26 @@ function pickCat(n,el){selCat=n;const cls=curType==='收入'?'sel-income':'sel-e
 async function addTx(){
   const date=document.getElementById('txDate').value,amt=parseFloat(document.getElementById('txAmount').value),note=document.getElementById('txNote').value.trim();
   if(!date){toast('請選擇日期');return}if(!selCat){toast('請選擇分類喵～');return}if(!amt||amt<=0){toast('請輸入正確金額');return}
-
   document.getElementById('submitBtn').disabled=true;
-
-  if(curAddPerson === 'AA') {
-    const half = Math.round((amt / 2) * 100) / 100;
-    const appendNote = note ? note + ' (AA平分)' : 'AA平分';
-    const tx1 = {id:Date.now(), person:'老公', type:curType, category:selCat, amount:half, note:appendNote, date};
-    const tx2 = {id:Date.now()+1, person:'老婆', type:curType, category:selCat, amount:amt-half, note:appendNote, date};
-    txs.unshift(tx1, tx2);
-    saveTxs();
-    if(apiUrl) await api({action:'addBatch', txs:[tx1, tx2]});
-  } else {
-    const tx={id:Date.now(), person:curAddPerson, type:curType, category:selCat, amount:amt, note, date};
-    txs.unshift(tx);
-    saveTxs();
-    if(apiUrl) await api({action:'add', tx});
+  if(curAddPerson==='AA'){
+    const half=Math.round((amt/2)*100)/100;
+    const n=note?note+' (AA平分)':'AA平分';
+    const t1={id:Date.now(),person:'老公',type:curType,category:selCat,amount:half,note:n,date};
+    const t2={id:Date.now()+1,person:'老婆',type:curType,category:selCat,amount:amt-half,note:n,date};
+    txs.unshift(t1,t2);saveTxs();
+    if(apiUrl)await api({action:'addBatch',txs:[t1,t2]});
+  }else{
+    const tx={id:Date.now(),person:curAddPerson,type:curType,category:selCat,amount:amt,note,date};
+    txs.unshift(tx);saveTxs();
+    if(apiUrl)await api({action:'add',tx});
   }
-
-  resetForm(); updateSummary(); renderRec();
-  goPage('home',document.querySelector('.nitem')); toast('🐾 記帳成功喵！');
-  if(apiUrl) fetchFromSheets();
+  resetForm();updateSummary();renderRec();
+  goPage('home',document.querySelector('.nitem'));toast('🐾 記帳成功喵！');
+  if(apiUrl)fetchFromSheets();
   document.getElementById('submitBtn').disabled=false;
 }
 function resetForm(){document.getElementById('txAmount').value='';document.getElementById('txNote').value='';selCat='';renderCats();}
-async function delTx(id){if(!confirm('確定刪除？喵'))return;txs=txs.filter(t=>t.id!==id);saveTxs();updateSummary();renderRec();updateCharts();toast('已刪除 🐾');if(apiUrl)await pushDelete(id);}
+async function delTx(id){if(!confirm('確定刪除？喵'))return;txs=txs.filter(t=>t.id!==id);saveTxs();updateSummary();renderRec();updateCharts();toast('已刪除 🐾');if(apiUrl)await api({action:'delete',id});if(apiUrl)fetchFromSheets();}
 function saveTxs(){localStorage.setItem('coupletxs',JSON.stringify(txs));}
 
 // ── SHOPPING LIST ─────────────────────────────────────────────
@@ -509,11 +523,11 @@ async function addListItem(){
   if(!text){toast('請輸入購買項目喵～');return}
   const item={id:Date.now(),text,addedBy:by,done:false,datetime:localNow()};
   shopList.unshift(item);saveShop();renderList();document.getElementById('listInput').value='';toast('🐾 已加入清單！');
-  if(apiUrl)await pushListAdd(item);
+  if(apiUrl)await api({action:'listAdd',item});if(apiUrl)fetchFromSheets();
 }
-async function toggleListItem(id){const item=shopList.find(i=>i.id===id);if(!item)return;item.done=!item.done;saveShop();renderList();if(apiUrl)await pushListToggle(id,item.done);}
-async function deleteListItem(id){shopList=shopList.filter(i=>i.id!==id);saveShop();renderList();toast('已刪除');if(apiUrl)await pushListDelete(id);}
-async function clearDoneItems(){const cnt=shopList.filter(i=>i.done).length;if(!cnt){toast('沒有已購買項目');return}if(!confirm(`確定清除 ${cnt} 個已購買項目？喵`))return;shopList=shopList.filter(i=>!i.done);saveShop();renderList();toast('🐾 已清除');if(apiUrl)await pushListClearDone();}
+async function toggleListItem(id){const item=shopList.find(i=>i.id===id);if(!item)return;item.done=!item.done;saveShop();renderList();if(apiUrl)await api({action:'listToggle',id,done:item.done});if(apiUrl)fetchFromSheets();}
+async function deleteListItem(id){shopList=shopList.filter(i=>i.id!==id);saveShop();renderList();toast('已刪除');if(apiUrl)await api({action:'listDelete',id});if(apiUrl)fetchFromSheets();}
+async function clearDoneItems(){const cnt=shopList.filter(i=>i.done).length;if(!cnt){toast('沒有已購買項目');return}if(!confirm(`確定清除 ${cnt} 個已購買項目？喵`))return;shopList=shopList.filter(i=>!i.done);saveShop();renderList();toast('🐾 已清除');if(apiUrl)await api({action:'listClearDone'});if(apiUrl)fetchFromSheets();}
 function saveShop(){localStorage.setItem('coupleShop',JSON.stringify(shopList));}
 function renderList(){
   const f=document.getElementById('listFilter').value;
@@ -537,8 +551,7 @@ function renderList(){
       <div class="si-actions">
         ${item.done
           ?`<button class="btn-mark-undone" onclick="toggleListItem(${item.id})">↩️ 取消已購</button>`
-          :`<button class="btn-mark-done" onclick="toggleListItem(${item.id})">✅ 標記已購買</button>`
-        }
+          :`<button class="btn-mark-done" onclick="toggleListItem(${item.id})">✅ 標記已購買</button>`}
       </div>
     </div>`).join('');
 }
@@ -571,17 +584,18 @@ function mkCell(ds,other,todayStr){
   cell.className='cal-cell'+(other?' other-month':'')+(isToday?' today':'')+(isSel?' selected':'');
   cell.onclick=()=>{calSelDate=ds;renderCalendar();};
   const dn=document.createElement('div');dn.className='cal-day-num';dn.textContent=parseInt(ds.split('-')[2]);cell.appendChild(dn);
-  const evs=calEvents.filter(e=>evOnDate(e,ds)).slice(0,3);
-  if(evs.length){
+  // ★ 使用 evOnDate (已套用 cleanDate) 確保範圍事件正確匹配
+  const dayEvs=calEvents.filter(e=>evOnDate(e,ds));
+  if(dayEvs.length){
     const evDiv=document.createElement('div');evDiv.className='cal-evs';
-    evs.forEach(e=>{
+    dayEvs.slice(0,3).forEach(e=>{
       const bar=document.createElement('div');
-      bar.className=e.startDate===e.endDate?'cal-ev-dot':'cal-ev-bar';
+      bar.className=cleanDate(e.startDate)===cleanDate(e.endDate)?'cal-ev-dot':'cal-ev-bar';
       bar.style.background=evColor(e.person);
       evDiv.appendChild(bar);
     });
-    if(calEvents.filter(e=>evOnDate(e,ds)).length>3){
-      const more=document.createElement('div');more.style.cssText='font-size:8px;color:var(--muted);text-align:center';more.textContent=`+${calEvents.filter(e=>evOnDate(e,ds)).length-3}`;evDiv.appendChild(more);
+    if(dayEvs.length>3){
+      const more=document.createElement('div');more.className='cal-ev-count';more.textContent=`+${dayEvs.length-3}`;evDiv.appendChild(more);
     }
     cell.appendChild(evDiv);
   }
@@ -592,28 +606,51 @@ function renderCalEvList(){
   const d=new Date(calSelDate+'T00:00:00');
   const dw=['日','一','二','三','四','五','六'];
   document.getElementById('calSelLabel').textContent=`${d.getMonth()+1}月${d.getDate()}日 (${dw[d.getDay()]})`;
-  const evs=calEvents.filter(e=>evOnDate(e,calSelDate)).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+
+  // ★ 一日多事件 — 排序：冇時間排最頭，有時間按早到晚排列
+  const evs=calEvents
+    .filter(e=>evOnDate(e,calSelDate))
+    .sort((a,b)=>{
+      const at=a.time||'';const bt=b.time||'';
+      if(!at&&bt) return -1;  // 冇時間排前
+      if(at&&!bt) return 1;
+      return at.localeCompare(bt);  // 同有時間：早到晚
+    });
+
+  const countLbl=document.getElementById('calEvCountLabel');
+  if(evs.length>0){countLbl.style.display='inline-block';countLbl.textContent=`共 ${evs.length} 個事件`;}
+  else{countLbl.style.display='none';}
+
   const el=document.getElementById('calEvList');
   if(!evs.length){el.innerHTML=emptyHtml('今日無事件，點「加入事件」新增喵～');return}
+
   el.innerHTML=evs.map(e=>{
     const cat=CAL_CATS.find(c=>c.n===e.category)||{i:'📌'};
     const col=evColor(e.person);
     const pBg=e.person==='老公'?'#EEF2FF':e.person==='老婆'?'#FFF0F5':'#F3E8FF';
-    const isRange=e.startDate!==e.endDate;
-    const rangeText=isRange?`${e.startDate} → ${e.endDate}`:'';
+    const isRange=cleanDate(e.startDate)!==cleanDate(e.endDate);
+    // ★ 事件卡片：清晰顯示時間、地點、跨日範圍、備註
     return `<div class="cal-ev-card" style="border-left-color:${col}">
-      <div class="cec-header">
-        <div class="cec-title">${cat.i} ${esc(e.title)}</div>
+      <div class="cec-top">
+        <div class="cec-title-wrap">
+          ${e.time
+            ?`<div class="cec-time-badge" style="background:${col}20;color:${col}">🕐 ${e.time}</div>`
+            :`<div class="cec-no-time">（全日）</div>`}
+          <div class="cec-title">${cat.i} ${esc(e.title)}</div>
+        </div>
         <div class="cec-actions">
-          <button class="rec-del" style="color:#A855F7;font-size:15px" onclick="editCalEvent(${e.id})">✏️</button>
-          <button class="rec-del" onclick="deleteCalEvent(${e.id})">🗑️</button>
+          <button class="cec-btn" onclick="editCalEvent(${e.id})" title="修改">✏️</button>
+          <button class="cec-btn" onclick="deleteCalEvent(${e.id})" title="刪除">🗑️</button>
         </div>
       </div>
-      <div class="cec-meta">
-        ${e.time?'🕐 '+e.time+'  ':''}${e.location?'📍 '+esc(e.location)+'  ':''}${rangeText?'📆 '+rangeText:''}
-        ${e.note?'<br>📝 '+esc(e.note):''}
+      <div class="cec-body">
+        <div class="cec-info-row">
+          ${e.location?`<span class="cec-pill">📍 ${esc(e.location)}</span>`:''}
+          ${isRange?`<span class="cec-pill">📆 ${cleanDate(e.startDate)} → ${cleanDate(e.endDate)}</span>`:''}
+        </div>
+        ${e.note?`<div class="cec-note-box">📝 ${esc(e.note)}</div>`:''}
+        <span class="cec-person-badge" style="background:${pBg};color:${col}">${e.person==='老公'?'🐱 老公':e.person==='老婆'?'🐱 老婆':'👫 一起'}</span>
       </div>
-      <span class="cec-person-badge" style="background:${pBg};color:${col}">${e.person==='老公'?'🐱 老公':e.person==='老婆'?'🐱 老婆':'👫 一起'}</span>
     </div>`;
   }).join('');
 }
@@ -633,9 +670,7 @@ function openCalModal(editing=false){
     document.getElementById('evTitle').value='';
     document.getElementById('evStartDate').value=calSelDate;
     document.getElementById('evEndDate').value=calSelDate;
-    document.getElementById('evTime').value='';
-    document.getElementById('evLocation').value='';
-    document.getElementById('evNote').value='';
+    document.getElementById('evTime').value='';document.getElementById('evLocation').value='';document.getElementById('evNote').value='';
     selEvPerson='一起';selEvCat='其他';
     document.querySelectorAll('#evPersonRow .sel-pill').forEach((el,i)=>{el.classList.toggle('ap',i===0);});
     renderEvCatPills();
@@ -649,15 +684,12 @@ function editCalEvent(id){
   document.getElementById('modalTitle').textContent='✏️ 修改事件';
   document.getElementById('modalSaveBtn').textContent='✅ 儲存修改';
   document.getElementById('evTitle').value=ev.title;
-  document.getElementById('evStartDate').value=ev.startDate;
-  document.getElementById('evEndDate').value=ev.endDate||ev.startDate;
-  document.getElementById('evTime').value=ev.time||'';
-  document.getElementById('evLocation').value=ev.location||'';
-  document.getElementById('evNote').value=ev.note||'';
+  document.getElementById('evStartDate').value=cleanDate(ev.startDate);
+  document.getElementById('evEndDate').value=cleanDate(ev.endDate||ev.startDate);
+  document.getElementById('evTime').value=ev.time||'';document.getElementById('evLocation').value=ev.location||'';document.getElementById('evNote').value=ev.note||'';
   selEvPerson=ev.person||'一起';selEvCat=ev.category||'其他';
   document.querySelectorAll('#evPersonRow .sel-pill').forEach(el=>{el.classList.toggle('ap',el.textContent.includes(selEvPerson));});
-  renderEvCatPills();
-  openCalModal(true);
+  renderEvCatPills();openCalModal(true);
 }
 
 function closeCalModal(){document.getElementById('calModal').classList.remove('show');}
@@ -670,25 +702,22 @@ async function saveCalEvent(){
   if(!startDate){toast('請選擇開始日期');return}
   if(endDate<startDate){toast('結束日期不能早於開始日期');return}
   const ev={
-    id:editingEventId||Date.now(),title,startDate,endDate,
+    id:editingEventId||Date.now(),title,
+    startDate,endDate,
     time:document.getElementById('evTime').value,
     location:document.getElementById('evLocation').value.trim(),
     person:selEvPerson,category:selEvCat,
     note:document.getElementById('evNote').value.trim()
   };
-  if(editingEventId){
-    const idx=calEvents.findIndex(e=>e.id===editingEventId);
-    if(idx!==-1)calEvents[idx]=ev;
-  }else{
-    calEvents.unshift(ev);
-  }
+  if(editingEventId){const idx=calEvents.findIndex(e=>e.id===editingEventId);if(idx!==-1)calEvents[idx]=ev;}
+  else{calEvents.unshift(ev);}
   saveCalEv();closeCalModal();renderCalendar();
   toast(editingEventId?'✏️ 已更新事件喵！':'📅 已加入行事曆喵！');
-  if(apiUrl){if(editingEventId)await pushCalUpdate(ev);else await pushCalAdd(ev);}
+  if(apiUrl){await api({action:editingEventId?'calUpdate':'calAdd',event:ev});fetchFromSheets();}
   editingEventId=null;
 }
 
-async function deleteCalEvent(id){if(!confirm('確定刪除此事件？喵'))return;calEvents=calEvents.filter(e=>e.id!==id);saveCalEv();renderCalendar();toast('已刪除');if(apiUrl)await pushCalDelete(id);}
+async function deleteCalEvent(id){if(!confirm('確定刪除此事件？喵'))return;calEvents=calEvents.filter(e=>e.id!==id);saveCalEv();renderCalendar();toast('已刪除');if(apiUrl){await api({action:'calDelete',id});fetchFromSheets();}}
 function saveCalEv(){localStorage.setItem('coupleCalEv',JSON.stringify(calEvents));}
 
 // ── GOOGLE SHEETS SYNC ────────────────────────────────────────
@@ -697,11 +726,29 @@ async function fetchFromSheets(){
   try{
     const res=await fetch(apiUrl,{redirect:'follow'});const json=await res.json();
     if(json.success){
-      const txRaw=json.transactions||json.data||[];
-      txs=txRaw.map(r=>({id:Number(r.id),date:String(r.date).split('T')[0],person:String(r.person),type:String(r.type),category:String(r.category),amount:Number(r.amount),note:String(r.note||'')})).sort((a,b)=>b.id-a.id);
+      const txRaw=json.transactions||[];
+      txs=txRaw.map(r=>({id:Number(r.id),date:cleanDate(r.date),person:String(r.person),type:String(r.type),category:String(r.category),amount:Number(r.amount),note:String(r.note||'')})).sort((a,b)=>b.id-a.id);
       saveTxs();
-      if(json.shoppingList){shopList=json.shoppingList.map(r=>({id:Number(r.id),text:String(r.text),addedBy:String(r.addedBy),done:r.done===true||r.done==='TRUE'||r.done===1,datetime:String(r.datetime||'')})).sort((a,b)=>b.id-a.id);saveShop();renderList();}
-      if(json.calendarEvents){calEvents=json.calendarEvents.map(r=>normalizeEv({id:Number(r.id),title:String(r.title),startDate:String(r.startDate||r.date||'').split('T')[0],endDate:String(r.endDate||r.startDate||r.date||'').split('T')[0],time:String(r.time||''),person:String(r.person||'一起'),category:String(r.category||'其他'),location:String(r.location||''),note:String(r.note||'')})).sort((a,b)=>b.id-a.id);saveCalEv();if(document.getElementById('page-cal').classList.contains('active'))renderCalendar();}
+      if(json.shoppingList){
+        shopList=json.shoppingList.map(r=>({id:Number(r.id),text:String(r.text),addedBy:String(r.addedBy),done:r.done===true||r.done==='TRUE'||r.done===1,datetime:String(r.datetime||'')})).sort((a,b)=>b.id-a.id);
+        saveShop();renderList();
+      }
+      if(json.calendarEvents){
+        // ★ 讀回時全部套用 cleanDate，移除任何因 Apps Script bug 遺留的 ' 前綴
+        calEvents=json.calendarEvents.map(r=>normalizeEv({
+          id:Number(r.id),
+          title:String(r.title),
+          startDate:cleanDate(r.startDate||r.date),
+          endDate:cleanDate(r.endDate||r.startDate||r.date),
+          time:String(r.time||''),
+          person:String(r.person||'一起'),
+          category:String(r.category||'其他'),
+          location:String(r.location||''),
+          note:String(r.note||'')
+        })).sort((a,b)=>b.id-a.id);
+        saveCalEv();
+        if(document.getElementById('page-cal').classList.contains('active'))renderCalendar();
+      }
       lastSyncTime=new Date();setSyncStat('online');updateSummary();renderRec();
       if(document.getElementById('page-charts').classList.contains('active'))updateCharts();
       updateSettingsStatus();
@@ -710,21 +757,11 @@ async function fetchFromSheets(){
   isFetching=false;
 }
 async function api(body){try{await fetch(apiUrl,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body)});}catch(e){console.error(e);setSyncStat('error');}}
-async function pushAdd(tx){await api({action:'add',tx});}
-async function pushDelete(id){await api({action:'delete',id});await fetchFromSheets();}
-async function pushListAdd(item){await api({action:'listAdd',item});await fetchFromSheets();}
-async function pushListToggle(id,done){await api({action:'listToggle',id,done});await fetchFromSheets();}
-async function pushListDelete(id){await api({action:'listDelete',id});await fetchFromSheets();}
-async function pushListClearDone(){await api({action:'listClearDone'});await fetchFromSheets();}
-async function pushCalAdd(event){await api({action:'calAdd',event});await fetchFromSheets();}
-async function pushCalUpdate(event){await api({action:'calUpdate',event});await fetchFromSheets();}
-async function pushCalDelete(id){await api({action:'calDelete',id});await fetchFromSheets();}
-
 function setSyncStat(s){
   syncStat=s;const badge=document.getElementById('syncBadge');
-  const m={online:{t:'🟢 已同步',c:'rgba(200,255,200,.95)'},syncing:{t:'🐾 同步中...',c:'#FFF9C4'},error:{t:'🔴 同步失敗',c:'#FFCDD2'},unset:{t:'⚪ 未設定同步',c:'rgba(255,255,255,.6)'}}[s]||{t:'⚪',c:''};
+  const m={online:{t:'🟢 已同步'},syncing:{t:'🐾 同步中...'},error:{t:'🔴 同步失敗'},unset:{t:'⚪ 未設定同步'}}[s]||{t:'⚪'};
   if(s==='online'&&lastSyncTime){const mn=Math.floor((new Date()-lastSyncTime)/60000);m.t=mn<1?'🟢 剛剛同步':`🟢 ${mn}分鐘前`;}
-  badge.textContent=m.t;badge.style.color=m.c;
+  badge.textContent=m.t;
 }
 async function saveApiUrl(){const url=document.getElementById('apiUrlInput').value.trim();if(!url){toast('請輸入網址');return}if(!url.includes('script.google.com')){toast('請輸入正確網址');return}apiUrl=url;localStorage.setItem('apiUrl',url);toast('🐾 測試連線中...');await fetchFromSheets();updateSettingsStatus();}
 function updateSettingsStatus(){
@@ -761,8 +798,9 @@ function renderRec(){
 function txHtml(t,showDel=false){
   const cat=CATS[t.type].find(c=>c.n===t.category);const ico=cat?cat.i:(t.type==='收入'?'💰':'💸');
   const bg=t.type==='收入'?'#E8F5E9':'#FFEBEE',ac=t.type==='收入'?'#2E7D32':'#C62828',sg=t.type==='收入'?'+':'-';
+  const pTag=t.person==='老公'?`<span style="color:var(--husband);font-size:9px">老公</span>`:`<span style="color:var(--wife);font-size:9px">老婆</span>`;
   return `<div class="rec-item"><div class="rec-icon" style="background:${bg}">${ico}</div>
-    <div class="rec-info"><div class="rec-cat">${esc(t.category)} ${t.person==='老公'?'🐱':'🐱'}</div><div class="rec-meta">${fmtDate(t.date)}${t.note?' · '+esc(t.note):''}</div></div>
+    <div class="rec-info"><div class="rec-cat">${esc(t.category)} ${pTag}</div><div class="rec-meta">${fmtDate(t.date)}${t.note?' · '+esc(t.note):''}</div></div>
     <div class="rec-amt" style="color:${ac}">${sg}HK$${t.amount.toFixed(2)}</div>
     ${showDel?`<button class="rec-del" onclick="delTx(${t.id})">🗑️</button>`:''}</div>`;
 }
