@@ -11,16 +11,12 @@
   --income:#2E7D32;--expense:#C62828;--bg:#FDF6FF;--card:#fff;--text:#2D2D2D;--muted:#888;
   --border:#EDE8F5;--shadow:0 2px 16px rgba(120,80,180,.08);}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:72px}
-.header{background:linear-gradient(135deg,#FF6B9D,#A855F7,#5B8CFF);color:#fff;padding:14px 16px 11px;text-align:center;position:relative;overflow:hidden}
+.header{background:linear-gradient(135deg,#FF6B9D,#A855F7,#5B8CFF);color:#fff;padding:16px 16px 14px;text-align:center;position:relative;overflow:hidden;border-radius:0 0 16px 16px;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
 .header::before{content:'🐾';position:absolute;right:12px;top:12px;font-size:20px;opacity:.3;transform:rotate(15deg)}
 .header::after{content:'🐾';position:absolute;left:12px;top:10px;font-size:14px;opacity:.2;transform:rotate(-20deg)}
-.header h1{font-size:17px;font-weight:800}
-.header-cat{font-size:10px;opacity:.85;margin-top:1px}
-.sync-badge{font-size:10px;display:inline-block;margin-top:2px}
-.person-sel{display:flex;background:rgba(255,255,255,.22);border-radius:25px;padding:3px;margin:9px auto 0;width:fit-content}
-.psn-btn{padding:5px 18px;border:none;border-radius:22px;cursor:pointer;font-size:12px;font-weight:700;background:transparent;color:#fff;transition:all .2s}
-.psn-btn.active{background:#fff}
-.psn-btn.husband.active{color:var(--husband)}.psn-btn.wife.active{color:var(--wife)}
+.header h1{font-size:18px;font-weight:800;letter-spacing:0.5px}
+.header-cat{font-size:11px;opacity:.9;margin-top:3px}
+.sync-badge{font-size:10px;display:inline-block;margin-top:6px;background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:10px}
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid var(--border);display:flex;z-index:200;box-shadow:0 -2px 12px rgba(120,80,180,.1)}
 .nitem{flex:1;display:flex;flex-direction:column;align-items:center;padding:5px 1px 4px;cursor:pointer;color:var(--muted);font-size:8.5px;border:none;background:none;transition:color .2s}
 .nitem.active{color:var(--primary)}
@@ -51,6 +47,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .tbtn{flex:1;padding:10px;border:2px solid var(--border);border-radius:10px;background:#fff;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
 .tbtn.expense.active{border-color:#C62828;background:#FFEBEE;color:#C62828}
 .tbtn.income.active{border-color:#2E7D32;background:#E8F5E9;color:#2E7D32}
+
+/* Member Selector styling in Add Page */
+.psn-f.h.active{border-color:var(--husband);background:#EEF2FF;color:var(--husband)}
+.psn-f.w.active{border-color:var(--wife);background:#FFF0F5;color:var(--wife)}
+.psn-f.aa.active{border-color:var(--together);background:#F3E8FF;color:var(--together)}
+
 .cat-grid{display:flex;flex-wrap:wrap;gap:6px}
 .cpill{padding:5px 10px;border:1.5px solid var(--border);border-radius:18px;font-size:11px;cursor:pointer;transition:all .2s;background:#fff;white-space:nowrap}
 .cpill.sel-income{border-color:#2E7D32;background:#E8F5E9;color:#2E7D32}
@@ -63,7 +65,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .rec-item{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
 .rec-item:last-child{border-bottom:none}
 .rec-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-right:10px;flex-shrink:0}
-.rec-info{flex:1;min-width:0}.rec-cat{font-size:12px;font-weight:700}.rec-meta{font-size:10px;color:var(--muted);margin-top:2px}
+.rec-info{flex:1;min-width:0}.rec-cat{font-size:12px;font-weight:700}.rec-meta{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.4}
 .rec-amt{font-size:14px;font-weight:800;white-space:nowrap}
 .rec-del{margin-left:6px;background:none;border:none;color:#ddd;cursor:pointer;font-size:14px;padding:2px;flex-shrink:0}
 .date-group{font-size:10px;font-weight:700;color:var(--muted);padding:7px 0 2px}
@@ -99,7 +101,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .si-actions{display:flex;gap:6px;margin-top:7px;padding-left:0}
 .btn-mark-done{flex:1;padding:7px;border:1.5px solid #2E7D32;border-radius:8px;background:#E8F5E9;color:#2E7D32;font-size:11px;font-weight:700;cursor:pointer}
 .btn-mark-undone{flex:1;padding:7px;border:1.5px solid #888;border-radius:8px;background:#F5F5F5;color:#666;font-size:11px;font-weight:700;cursor:pointer}
-.btn-del-item{padding:7px 10px;border:1.5px solid #FFCDD2;border-radius:8px;background:#FFEBEE;color:#C62828;font-size:11px;font-weight:700;cursor:pointer}
 .done-badge{font-size:10px;background:#E8F5E9;color:#2E7D32;padding:2px 7px;border-radius:8px;font-weight:700;white-space:nowrap}
 /* CALENDAR */
 .cal-page{margin-top:12px}
@@ -205,15 +206,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   </div>
 </div>
 
-<!-- HEADER -->
+<!-- HEADER (已移除全域成員切換，令介面更清晰) -->
 <div class="header">
   <h1>🐱 夫妻共同記帳</h1>
   <div class="header-cat">兩隻貓咪管好錢包 🐾</div>
   <div class="sync-badge" id="syncBadge">⚪ 未設定同步</div>
-  <div class="person-sel">
-    <button class="psn-btn husband active" onclick="setPerson('老公',this)">🐱 老公</button>
-    <button class="psn-btn wife" onclick="setPerson('老婆',this)">🐱 老婆</button>
-  </div>
 </div>
 
 <!-- HOME -->
@@ -255,8 +252,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 <!-- ADD -->
 <div class="page" id="page-add">
   <div class="card form-section">
-    <div class="form-header">🐾 記帳 — <span id="addingFor">老公</span></div>
+    <div class="form-header">🐾 新增記帳</div>
     <div class="fg"><label class="flabel">日期</label><input type="date" class="finput" id="txDate"></div>
+    <div class="fg">
+      <label class="flabel">誰付款？(支援帳單平分)</label>
+      <div class="type-toggle">
+        <button class="tbtn psn-f h active" onclick="setAddPerson('老公',this)">🐱 老公</button>
+        <button class="tbtn psn-f w" onclick="setAddPerson('老婆',this)">🐱 老婆</button>
+        <button class="tbtn psn-f aa" onclick="setAddPerson('AA',this)">➗ 平分</button>
+      </div>
+    </div>
     <div class="fg"><label class="flabel">類型</label>
       <div class="type-toggle">
         <button class="tbtn expense active" id="btnExp" onclick="setType('支出')">💸 支出</button>
@@ -379,17 +384,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
       <div class="fg">
         <label class="flabel">Apps Script 網址</label>
         <input type="url" class="finput" id="apiUrlInput" placeholder="https://script.google.com/macros/s/...">
-        <div style="font-size:10px;color:#888;margin-top:3px">請使用最新版 <b>Code_gs_v4.txt</b> 部署</div>
+        <div style="font-size:10px;color:#888;margin-top:3px">請使用最新版 <b>Code_gs_v5.txt</b> 重新部署以修正時區</div>
       </div>
       <button class="btn-submit" style="margin-bottom:9px" onclick="saveApiUrl()">💾 儲存並測試連線</button>
       <button class="btn-secondary" onclick="fetchFromSheets()">🔄 立即同步</button>
       <div class="last-sync-label" id="lastSyncLabel"></div>
     </div>
     <div class="card" style="margin-bottom:14px">
-      <div style="font-size:13px;font-weight:800;margin-bottom:12px">📋 設定步驟 <span class="update-badge">v5</span></div>
+      <div style="font-size:13px;font-weight:800;margin-bottom:12px">📋 設定步驟 <span class="update-badge">v6</span></div>
       <div class="step"><div class="step-num">1</div><div><div class="step-title">建立 Google Sheet</div><div class="step-desc"><a href="https://sheets.google.com" target="_blank">sheets.google.com</a> 新建試算表</div></div></div>
       <div class="step"><div class="step-num">2</div><div><div class="step-title">Apps Script</div><div class="step-desc">擴充功能 → Apps Script</div></div></div>
-      <div class="step"><div class="step-num">3</div><div><div class="step-title">貼上程式碼</div><div class="step-desc">全選刪除，貼上 <b>Code_gs_v4.txt</b>，💾 儲存</div></div></div>
+      <div class="step"><div class="step-num">3</div><div><div class="step-title">貼上程式碼</div><div class="step-desc">全選刪除，貼上 <b>Code_gs_v5.txt</b>，💾 儲存</div></div></div>
       <div class="step"><div class="step-num">4</div><div><div class="step-title">部署 Web App</div><div class="step-desc">部署→新增→網頁應用程式<br>執行身份：我 ／ 存取：所有人 → 授權</div></div></div>
       <div class="step" style="margin-bottom:0"><div class="step-num">5</div><div><div class="step-title">兩人貼上同一 URL</div><div class="step-desc">各自設定頁貼上 URL → 連線成功 🎉</div></div></div>
     </div>
@@ -418,7 +423,7 @@ const MONTHS=['一月','二月','三月','四月','五月','六月','七月','�
 const PAL=['#FF6B9D','#A855F7','#5B8CFF','#4ECDC4','#FFD166','#06D6A0','#EF476F','#118AB2','#FFB347','#C77DFF','#80ED99','#FF9F1C','#2EC4B6','#E71D36','#FF9F43','#48CAE4','#7B2FBE','#FB8500','#06A77D','#D62246'];
 
 // ── STATE ─────────────────────────────────────────────────────
-let curPerson='老公',curType='支出',selCat='',chartRange='thisMonth';
+let curAddPerson='老公', curType='支出', selCat='', chartRange='thisMonth';
 let txs      =JSON.parse(localStorage.getItem('coupletxs')||'[]');
 let shopList =JSON.parse(localStorage.getItem('coupleShop')||'[]');
 let calEvents=JSON.parse(localStorage.getItem('coupleCalEv')||'[]').map(normalizeEv);
@@ -458,7 +463,11 @@ function init(){
 }
 
 // ── PERSON / TYPE / CATS ──────────────────────────────────────
-function setPerson(p,btn){curPerson=p;document.querySelectorAll('.psn-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('addingFor').textContent=p;}
+function setAddPerson(p,btn){
+  curAddPerson=p;
+  document.querySelectorAll('.psn-f').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
 function setType(t){curType=t;selCat='';document.getElementById('btnExp').classList.toggle('active',t==='支出');document.getElementById('btnInc').classList.toggle('active',t==='收入');renderCats();}
 function renderCats(){const g=document.getElementById('catGrid');const sc=curType==='收入'?'sel-income':'sel-expense';g.innerHTML=CATS[curType].map(c=>`<div class="cpill${selCat===c.n?' '+sc:''}" onclick="pickCat('${c.n}',this)">${c.i} ${c.n}</div>`).join('');}
 function pickCat(n,el){selCat=n;const cls=curType==='收入'?'sel-income':'sel-expense';document.querySelectorAll('.cpill').forEach(p=>p.classList.remove('sel-income','sel-expense'));el.classList.add(cls);}
@@ -467,11 +476,27 @@ function pickCat(n,el){selCat=n;const cls=curType==='收入'?'sel-income':'sel-e
 async function addTx(){
   const date=document.getElementById('txDate').value,amt=parseFloat(document.getElementById('txAmount').value),note=document.getElementById('txNote').value.trim();
   if(!date){toast('請選擇日期');return}if(!selCat){toast('請選擇分類喵～');return}if(!amt||amt<=0){toast('請輸入正確金額');return}
-  const tx={id:Date.now(),person:curPerson,type:curType,category:selCat,amount:amt,note,date};
-  txs.unshift(tx);saveTxs();resetForm();updateSummary();renderRec();
-  goPage('home',document.querySelector('.nitem'));toast('🐾 記帳成功喵！');
+
   document.getElementById('submitBtn').disabled=true;
-  if(apiUrl)await pushAdd(tx);
+
+  if(curAddPerson === 'AA') {
+    const half = Math.round((amt / 2) * 100) / 100;
+    const appendNote = note ? note + ' (AA平分)' : 'AA平分';
+    const tx1 = {id:Date.now(), person:'老公', type:curType, category:selCat, amount:half, note:appendNote, date};
+    const tx2 = {id:Date.now()+1, person:'老婆', type:curType, category:selCat, amount:amt-half, note:appendNote, date};
+    txs.unshift(tx1, tx2);
+    saveTxs();
+    if(apiUrl) await api({action:'addBatch', txs:[tx1, tx2]});
+  } else {
+    const tx={id:Date.now(), person:curAddPerson, type:curType, category:selCat, amount:amt, note, date};
+    txs.unshift(tx);
+    saveTxs();
+    if(apiUrl) await api({action:'add', tx});
+  }
+
+  resetForm(); updateSummary(); renderRec();
+  goPage('home',document.querySelector('.nitem')); toast('🐾 記帳成功喵！');
+  if(apiUrl) fetchFromSheets();
   document.getElementById('submitBtn').disabled=false;
 }
 function resetForm(){document.getElementById('txAmount').value='';document.getElementById('txNote').value='';selCat='';renderCats();}
@@ -527,15 +552,11 @@ function renderCalendar(){
   const todayStr=localDate();
   const grid=document.getElementById('calGrid');
   grid.innerHTML='';
-  // Prev month cells
   for(let i=firstDow-1;i>=0;i--){
-    const day=prevLastDay-i;
-    const [y,m]=calMonth===0?[calYear-1,11]:[calYear,calMonth-1];
+    const day=prevLastDay-i;const [y,m]=calMonth===0?[calYear-1,11]:[calYear,calMonth-1];
     grid.appendChild(mkCell(dStr(y,m,day),true,todayStr));
   }
-  // Current month
   for(let d=1;d<=lastDay;d++) grid.appendChild(mkCell(dStr(calYear,calMonth,d),false,todayStr));
-  // Next month
   const total=firstDow+lastDay;const rem=total%7===0?0:7-(total%7);
   for(let d=1;d<=rem;d++){
     const [y,m]=calMonth===11?[calYear+1,0]:[calYear,calMonth+1];
@@ -555,8 +576,7 @@ function mkCell(ds,other,todayStr){
     const evDiv=document.createElement('div');evDiv.className='cal-evs';
     evs.forEach(e=>{
       const bar=document.createElement('div');
-      const isSingle=e.startDate===e.endDate;
-      bar.className=isSingle?'cal-ev-dot':'cal-ev-bar';
+      bar.className=e.startDate===e.endDate?'cal-ev-dot':'cal-ev-bar';
       bar.style.background=evColor(e.person);
       evDiv.appendChild(bar);
     });
@@ -579,7 +599,6 @@ function renderCalEvList(){
     const cat=CAL_CATS.find(c=>c.n===e.category)||{i:'📌'};
     const col=evColor(e.person);
     const pBg=e.person==='老公'?'#EEF2FF':e.person==='老婆'?'#FFF0F5':'#F3E8FF';
-    const pCol=evColor(e.person);
     const isRange=e.startDate!==e.endDate;
     const rangeText=isRange?`${e.startDate} → ${e.endDate}`:'';
     return `<div class="cal-ev-card" style="border-left-color:${col}">
@@ -594,7 +613,7 @@ function renderCalEvList(){
         ${e.time?'🕐 '+e.time+'  ':''}${e.location?'📍 '+esc(e.location)+'  ':''}${rangeText?'📆 '+rangeText:''}
         ${e.note?'<br>📝 '+esc(e.note):''}
       </div>
-      <span class="cec-person-badge" style="background:${pBg};color:${pCol}">${e.person==='老公'?'🐱 老公':e.person==='老婆'?'🐱 老婆':'👫 一起'}</span>
+      <span class="cec-person-badge" style="background:${pBg};color:${col}">${e.person==='老公'?'🐱 老公':e.person==='老婆'?'🐱 老婆':'👫 一起'}</span>
     </div>`;
   }).join('');
 }
@@ -691,7 +710,7 @@ async function fetchFromSheets(){
   isFetching=false;
 }
 async function api(body){try{await fetch(apiUrl,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body)});}catch(e){console.error(e);setSyncStat('error');}}
-async function pushAdd(tx){await api({action:'add',tx});await fetchFromSheets();}
+async function pushAdd(tx){await api({action:'add',tx});}
 async function pushDelete(id){await api({action:'delete',id});await fetchFromSheets();}
 async function pushListAdd(item){await api({action:'listAdd',item});await fetchFromSheets();}
 async function pushListToggle(id,done){await api({action:'listToggle',id,done});await fetchFromSheets();}
