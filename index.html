@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>夫妻共同記帳 🐾</title>
+<title>夫妻共同記帳 🐾</title><!-- v8 -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -386,14 +386,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
       <div class="fg">
         <label class="flabel">Apps Script 網址</label>
         <input type="url" class="finput" id="apiUrlInput" placeholder="https://script.google.com/macros/s/...">
-        <div style="font-size:10px;color:#888;margin-top:3px">請使用 <b>Code_gs_v6.txt</b> 重新部署（修正日期 Bug）</div>
+        <div style="font-size:10px;color:#888;margin-top:3px">請使用 <b>Code_gs_v6.txt</b> 部署（行事曆同步用）</div>
       </div>
       <button class="btn-submit" style="margin-bottom:9px" onclick="saveApiUrl()">💾 儲存並測試連線</button>
       <button class="btn-secondary" onclick="fetchFromSheets()">🔄 立即同步</button>
       <div class="last-sync-label" id="lastSyncLabel"></div>
     </div>
     <div class="card" style="margin-bottom:14px">
-      <div style="font-size:13px;font-weight:800;margin-bottom:12px">📋 設定步驟 <span class="update-badge">v7</span></div>
+      <div style="font-size:13px;font-weight:800;margin-bottom:12px">📋 設定步驟 <span class="update-badge">v8</span></div>
       <div class="step"><div class="step-num">1</div><div><div class="step-title">建立 Google Sheet</div><div class="step-desc"><a href="https://sheets.google.com" target="_blank">sheets.google.com</a> 新建試算表</div></div></div>
       <div class="step"><div class="step-num">2</div><div><div class="step-title">Apps Script</div><div class="step-desc">擴充功能 → Apps Script</div></div></div>
       <div class="step"><div class="step-num">3</div><div><div class="step-title">貼上程式碼</div><div class="step-desc">全選刪除，貼上 <b>Code_gs_v6.txt</b>，💾 儲存</div></div></div>
@@ -645,7 +645,9 @@ function renderCalEvList(){
       </div>
       <div class="cec-body">
         <div class="cec-info-row">
+          ${e.time?`<span class="cec-pill">🕐 ${esc(e.time)}</span>`:''}
           ${e.location?`<span class="cec-pill">📍 ${esc(e.location)}</span>`:''}
+          <span class="cec-pill">${cat.i} ${esc(e.category||'其他')}</span>
           ${isRange?`<span class="cec-pill">📆 ${cleanDate(e.startDate)} → ${cleanDate(e.endDate)}</span>`:''}
         </div>
         ${e.note?`<div class="cec-note-box">📝 ${esc(e.note)}</div>`:''}
@@ -713,11 +715,11 @@ async function saveCalEvent(){
   else{calEvents.unshift(ev);}
   saveCalEv();closeCalModal();renderCalendar();
   toast(editingEventId?'✏️ 已更新事件喵！':'📅 已加入行事曆喵！');
-  if(apiUrl){await api({action:editingEventId?'calUpdate':'calAdd',event:ev});fetchFromSheets();}
+  if(apiUrl){await api({action:editingEventId?'calUpdate':'calAdd',event:ev});setTimeout(()=>fetchFromSheets(),1500);}
   editingEventId=null;
 }
 
-async function deleteCalEvent(id){if(!confirm('確定刪除此事件？喵'))return;calEvents=calEvents.filter(e=>e.id!==id);saveCalEv();renderCalendar();toast('已刪除');if(apiUrl){await api({action:'calDelete',id});fetchFromSheets();}}
+async function deleteCalEvent(id){if(!confirm('確定刪除此事件？喵'))return;calEvents=calEvents.filter(e=>e.id!==id);saveCalEv();renderCalendar();toast('已刪除');if(apiUrl){await api({action:'calDelete',id});setTimeout(()=>fetchFromSheets(),1500);}}
 function saveCalEv(){localStorage.setItem('coupleCalEv',JSON.stringify(calEvents));}
 
 // ── GOOGLE SHEETS SYNC ────────────────────────────────────────
